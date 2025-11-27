@@ -142,6 +142,7 @@ export default function ManageSermons() {
               audioUrl: '',
               videoUrl: '',
               image: '',
+              type: 'sermon' as 'sermon' | 'catechisis',
               isActive: true,
             });
           }}
