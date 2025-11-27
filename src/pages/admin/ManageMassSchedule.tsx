@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { massScheduleAPI, missionStationsAPI } from '../../services/api';
 import { getStoredUser } from '../../utils/auth';
 import type { MassSchedule, MissionStation } from '../../types';
-import { DAYS_OF_WEEK, MASS_SCHEDULE_TYPES } from '../../data/constants';
+import { DAYS_OF_WEEK, MASS_SCHEDULE_TYPES, type MassScheduleType } from '../../data/constants';
 
 export default function ManageMassSchedule() {
   const navigate = useNavigate();
@@ -13,7 +13,14 @@ export default function ManageMassSchedule() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<MassSchedule | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    missionStation: string;
+    dayOfWeek: typeof DAYS_OF_WEEK[number];
+    time: string;
+    type: MassScheduleType;
+    description: string;
+    isActive: boolean;
+  }>({
     missionStation: '',
     dayOfWeek: DAYS_OF_WEEK[0],
     time: '',
@@ -89,9 +96,9 @@ export default function ManageMassSchedule() {
     
     setFormData({
       missionStation: stationId,
-      dayOfWeek: schedule.dayOfWeek,
+      dayOfWeek: schedule.dayOfWeek as typeof DAYS_OF_WEEK[number],
       time: schedule.time,
-      type: schedule.type,
+      type: schedule.type as MassScheduleType,
       description: schedule.description || '',
       isActive: schedule.isActive || true,
     });
@@ -211,7 +218,7 @@ export default function ManageMassSchedule() {
                   <select
                     required
                     value={formData.dayOfWeek}
-                    onChange={(e) => setFormData({ ...formData, dayOfWeek: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, dayOfWeek: e.target.value as typeof DAYS_OF_WEEK[number] })}
                     className="w-full px-4 py-2 border rounded-lg"
                   >
                     {DAYS_OF_WEEK.map(day => (
@@ -236,7 +243,7 @@ export default function ManageMassSchedule() {
                 <select
                   required
                   value={formData.type}
-                  onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, type: e.target.value as MassScheduleType })}
                   className="w-full px-4 py-2 border rounded-lg"
                 >
                   {MASS_SCHEDULE_TYPES.map(type => (

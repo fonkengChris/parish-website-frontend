@@ -53,8 +53,14 @@ export default function MassSchedulePage() {
   });
 
   // Build cards data - one card per station
+  type StationCard = {
+    stationId: string;
+    stationName: string;
+    schedulesByDay: Array<{ day: typeof DAYS_OF_WEEK[number]; schedules: MassSchedule[] }>;
+  };
+
   const stationCards = Array.from(stationMap.entries())
-    .map(([stationId, { name: stationName, schedules: stationSchedules }]) => {
+    .map(([stationId, { name: stationName, schedules: stationSchedules }]): StationCard | null => {
       // Filter by selected station if needed
       if (selectedStation && stationId !== selectedStation) {
         return null;
@@ -62,7 +68,7 @@ export default function MassSchedulePage() {
 
       // Group schedules by day
       const schedulesByDay = DAYS_OF_WEEK.map(day => ({
-        day,
+        day: day as typeof DAYS_OF_WEEK[number],
         schedules: stationSchedules.filter(s => s.dayOfWeek === day),
       }));
 
@@ -72,7 +78,7 @@ export default function MassSchedulePage() {
         schedulesByDay,
       };
     })
-    .filter((item): item is { stationId: string; stationName: string; schedulesByDay: Array<{ day: string; schedules: MassSchedule[] }> } =>
+    .filter((item): item is StationCard =>
       item !== null && item.schedulesByDay.some(d => d.schedules.length > 0)
     )
     .sort((a, b) => a.stationName.localeCompare(b.stationName));
@@ -147,7 +153,7 @@ export default function MassSchedulePage() {
                 {/* Card Body - Schedules by Day */}
                 <div className="p-6">
                   <div className="space-y-6">
-                    {schedulesByDay.map(({ day, schedules: daySchedules }) => {
+                    {schedulesByDay.map(({ day, schedules: daySchedules }: { day: typeof DAYS_OF_WEEK[number]; schedules: MassSchedule[] }) => {
                       if (daySchedules.length === 0) return null;
                       
                       return (
@@ -156,7 +162,7 @@ export default function MassSchedulePage() {
                             {day}
                           </h3>
                           <div className="space-y-3">
-                            {daySchedules.map((schedule) => (
+                            {daySchedules.map((schedule: MassSchedule) => (
                               <div
                                 key={schedule._id}
                                 className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 hover:shadow-md transition-all duration-200 border border-gray-100"

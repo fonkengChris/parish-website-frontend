@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { authAPI, parishionersAPI, missionStationsAPI, ministriesAPI } from '../services/api';
 import type { Parishioner, MissionStation, Ministry } from '../types';
 
 export default function EditProfile() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [parishioner, setParishioner] = useState<Parishioner | null>(null);
   const [missionStations, setMissionStations] = useState<MissionStation[]>([]);
   const [ministries, setMinistries] = useState<Ministry[]>([]);

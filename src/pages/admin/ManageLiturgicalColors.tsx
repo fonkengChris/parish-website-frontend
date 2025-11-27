@@ -41,7 +41,6 @@ export default function ManageLiturgicalColors() {
   });
   const [currentColor, setCurrentColor] = useState<LiturgicalColorResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [fetchingColor, setFetchingColor] = useState(false);
   const fetchingColorRef = useRef(false);
   const hasFetchedRef = useRef(false);
 
@@ -73,7 +72,6 @@ export default function ManageLiturgicalColors() {
     
     try {
       fetchingColorRef.current = true;
-      setFetchingColor(true);
       const color = await liturgicalColorAPI.getCurrent();
       setCurrentColor(color);
     } catch (err) {
@@ -81,7 +79,6 @@ export default function ManageLiturgicalColors() {
       // Don't set error state for current color failures, just log it
     } finally {
       fetchingColorRef.current = false;
-      setFetchingColor(false);
     }
   }, []);
 

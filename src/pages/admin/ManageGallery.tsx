@@ -13,7 +13,13 @@ export default function ManageGallery() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<GalleryItem | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string;
+    imageUrl: string;
+    eventId: string;
+    category: typeof GALLERY_CATEGORIES[number]['value'];
+    isActive: boolean;
+  }>({
     title: '',
     imageUrl: '',
     eventId: '',
@@ -88,7 +94,7 @@ export default function ManageGallery() {
       title: item.title,
       imageUrl: item.imageUrl,
       eventId: item.eventId || '',
-      category: item.category || 'general',
+      category: (item.category || 'general') as typeof GALLERY_CATEGORIES[number]['value'],
       isActive: item.isActive ?? true,
     });
     setShowForm(true);
@@ -172,7 +178,7 @@ export default function ManageGallery() {
                   <label className="block text-sm font-medium mb-1">Category</label>
                   <select
                     value={formData.category}
-                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value as typeof GALLERY_CATEGORIES[number]['value'] })}
                     className="w-full px-4 py-2 border rounded-lg"
                   >
                   {GALLERY_CATEGORIES.map(cat => (
