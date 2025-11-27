@@ -12,8 +12,27 @@ import type {
   AuthResponse 
 } from '../types';
 
+// Normalize baseURL - trim spaces and ensure proper format
+const getBaseURL = () => {
+  const envURL = import.meta.env.VITE_API_URL;
+  if (!envURL) return '/api';
+  
+  // Trim whitespace and remove trailing slashes
+  let url = envURL.trim();
+  if (url.endsWith('/')) {
+    url = url.slice(0, -1);
+  }
+  
+  // If URL doesn't end with /api, add it (unless it's already a full API URL)
+  if (!url.endsWith('/api') && !url.includes('/api/')) {
+    url = url.endsWith('/') ? url + 'api' : url + '/api';
+  }
+  
+  return url;
+};
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: getBaseURL(),
   headers: {
     'Content-Type': 'application/json',
   },
