@@ -89,6 +89,7 @@ export interface Sermon {
   audioUrl?: string;
   videoUrl?: string;
   image?: string;
+  type?: 'sermon' | 'catechisis';
   isActive?: boolean;
   createdAt?: string;
   updatedAt?: string;

@@ -20,6 +20,7 @@ export default function ManageSermons() {
     audioUrl: '',
     videoUrl: '',
     image: '',
+    type: 'sermon' as 'sermon' | 'catechisis',
     isActive: true,
   });
   const hasFetchedRef = useRef(false);
@@ -71,6 +72,7 @@ export default function ManageSermons() {
         audioUrl: '',
         videoUrl: '',
         image: '',
+        type: 'sermon' as 'sermon' | 'catechisis',
         isActive: true,
       });
       fetchSermons();
@@ -91,6 +93,7 @@ export default function ManageSermons() {
       audioUrl: sermon.audioUrl || '',
       videoUrl: sermon.videoUrl || '',
       image: sermon.image || '',
+      type: sermon.type || 'sermon',
       isActive: sermon.isActive ?? true,
     });
     setShowForm(true);
@@ -153,6 +156,18 @@ export default function ManageSermons() {
               {editing ? 'Edit' : 'Create'} Sermon
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Type *</label>
+                <select
+                  value={formData.type}
+                  onChange={(e) => setFormData({ ...formData, type: e.target.value as 'sermon' | 'catechisis' })}
+                  className="w-full px-4 py-2 border rounded-lg"
+                  required
+                >
+                  <option value="sermon">Sermon</option>
+                  <option value="catechisis">Catechisis</option>
+                </select>
+              </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Title *</label>
                 <input
@@ -272,6 +287,9 @@ export default function ManageSermons() {
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                    Type
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
                     Title
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
@@ -291,6 +309,15 @@ export default function ManageSermons() {
               <tbody className="bg-white divide-y divide-gray-200">
                 {sermons.map((sermon) => (
                   <tr key={sermon._id}>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                        sermon.type === 'catechisis'
+                          ? 'bg-blue-100 text-blue-800'
+                          : 'bg-primary-100 text-primary-800'
+                      }`}>
+                        {sermon.type === 'catechisis' ? 'Catechisis' : 'Sermon'}
+                      </span>
+                    </td>
                     <td className="px-6 py-4">
                       <div className="text-sm font-medium">{sermon.title}</div>
                     </td>
