@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { isAuthenticated } from './utils/auth';
 import { ThemeProvider } from './contexts/ThemeContext';
+import Analytics from './components/Analytics';
 
 // Public Pages
 import Home from './pages/Home';
@@ -42,6 +43,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 function App() {
   return (
     <ThemeProvider>
+      <Analytics />
       <Router>
         <Routes>
         {/* Public Routes */}

@@ -40,25 +40,79 @@ const api = axios.create({
 
 // Add token to requests if available
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('accessToken') || localStorage.getItem('token'); // Support both for backward compatibility
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
 
-// Handle auth errors
+// Handle auth errors and token refresh
+let isRefreshing = false;
+let failedQueue: Array<{ resolve: (value?: any) => void; reject: (reason?: any) => void }> = [];
+
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach(prom => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    // Don't redirect if we're already on the login page
+  async (error) => {
+    const originalRequest = error.config;
     const isLoginPage = window.location.pathname === '/admin/login';
     
-    if (error.response?.status === 401 && !isLoginPage) {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/admin/login';
+    // If 401 and not already retrying and not on login page
+    if (error.response?.status === 401 && !originalRequest._retry && !isLoginPage) {
+      if (isRefreshing) {
+        // If already refreshing, queue this request
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then(token => {
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+          return api(originalRequest);
+        }).catch(err => {
+          return Promise.reject(err);
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        // Try to refresh the token
+        const { data } = await axios.post(`${getBaseURL()}/auth/refresh`, {}, {
+          withCredentials: true // Include cookies for refresh token
+        });
+        
+        const { accessToken } = data;
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('token', accessToken); // For backward compatibility
+        
+        processQueue(null, accessToken);
+        originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+        return api(originalRequest);
+      } catch (refreshError) {
+        // Refresh failed, clear auth and redirect to login
+        processQueue(refreshError, null);
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        if (!isLoginPage) {
+          window.location.href = '/admin/login';
+        }
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
     }
+    
     return Promise.reject(error);
   }
 );
@@ -66,12 +120,30 @@ api.interceptors.response.use(
 // Auth API
 export const authAPI = {
   login: async (username: string, password: string): Promise<AuthResponse> => {
-    const { data } = await api.post<AuthResponse>('/auth/login', { username, password });
+    const { data } = await api.post<AuthResponse>('/auth/login', { username, password }, {
+      withCredentials: true // Include cookies for refresh token
+    });
     return data;
   },
   loginWithEmail: async (email: string, password: string): Promise<AuthResponse> => {
-    const { data } = await api.post<AuthResponse>('/auth/login', { email, password });
+    const { data } = await api.post<AuthResponse>('/auth/login', { email, password }, {
+      withCredentials: true // Include cookies for refresh token
+    });
     return data;
+  },
+  refresh: async (): Promise<{ accessToken: string }> => {
+    const { data } = await api.post<{ accessToken: string }>('/auth/refresh', {}, {
+      withCredentials: true
+    });
+    return data;
+  },
+  logout: async (): Promise<void> => {
+    await api.post('/auth/logout', {}, {
+      withCredentials: true
+    });
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
   },
   register: async (registrationData: { firstName: string; lastName: string; email: string; password: string; phone?: string }): Promise<{ message: string; user: { _id: string; email: string; role: string }; parishioner: { _id: string; firstName: string; lastName: string } }> => {
     const { data } = await api.post<{ message: string; user: { _id: string; email: string; role: string }; parishioner: { _id: string; firstName: string; lastName: string } }>('/auth/register', registrationData);
@@ -97,7 +169,11 @@ export const authAPI = {
 // Announcements API
 export const announcementsAPI = {
   getAll: async (): Promise<Announcement[]> => {
-    const { data } = await api.get<Announcement[]>('/announcements');
+    const { data } = await api.get<Announcement[]>('/announcements', {
+      headers: {
+        'Cache-Control': 'public, max-age=300' // 5 minutes
+      }
+    });
     return data;
   },
   getAllAdmin: async (): Promise<Announcement[]> => {
@@ -229,7 +305,11 @@ export const ministriesAPI = {
 // Gallery API
 export const galleryAPI = {
   getAll: async (): Promise<GalleryItem[]> => {
-    const { data } = await api.get<GalleryItem[]>('/gallery');
+    const { data } = await api.get<GalleryItem[]>('/gallery', {
+      headers: {
+        'Cache-Control': 'public, max-age=300' // 5 minutes
+      }
+    });
     return data;
   },
   getAllAdmin: async (): Promise<GalleryItem[]> => {

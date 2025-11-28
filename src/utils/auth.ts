@@ -10,18 +10,20 @@ export const getStoredUser = (): User | null => {
   }
 };
 
-export const setStoredUser = (user: User, token: string): void => {
+export const setStoredUser = (user: User, accessToken: string): void => {
   localStorage.setItem('user', JSON.stringify(user));
-  localStorage.setItem('token', token);
+  localStorage.setItem('accessToken', accessToken);
+  localStorage.setItem('token', accessToken); // For backward compatibility
 };
 
 export const clearStoredAuth = (): void => {
   localStorage.removeItem('user');
+  localStorage.removeItem('accessToken');
   localStorage.removeItem('token');
 };
 
 export const isAuthenticated = (): boolean => {
-  return !!localStorage.getItem('token');
+  return !!(localStorage.getItem('accessToken') || localStorage.getItem('token'));
 };
 
 export const isAdmin = (): boolean => {

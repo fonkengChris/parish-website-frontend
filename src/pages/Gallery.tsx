@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
+import LazyImage from '../components/LazyImage';
 import { galleryAPI } from '../services/api';
+import { cache, CACHE_KEYS } from '../utils/cache';
 import type { GalleryItem } from '../types';
 
 export default function Gallery() {
@@ -11,8 +13,20 @@ export default function Gallery() {
   useEffect(() => {
     const fetchItems = async () => {
       try {
+        // Check cache first
+        const cachedData = cache.get<GalleryItem[]>(CACHE_KEYS.GALLERY);
+        if (cachedData) {
+          setItems(cachedData);
+          setLoading(false);
+          return;
+        }
+
+        // Fetch from API
         const data = await galleryAPI.getAll();
         setItems(data);
+        
+        // Cache the result (5 minutes)
+        cache.set(CACHE_KEYS.GALLERY, data, 5 * 60 * 1000);
       } catch (error) {
         console.error('Error fetching gallery items:', error);
       } finally {
@@ -51,10 +65,13 @@ export default function Gallery() {
                   onClick={() => setSelectedItem(item)}
                 >
                   <div className="relative overflow-hidden">
-                    <img
+                    <LazyImage
                       src={item.imageUrl}
                       alt={item.title}
                       className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Image+Not+Available';
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   </div>

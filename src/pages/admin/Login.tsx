@@ -34,16 +34,17 @@ export default function AdminLogin() {
       // Debug: Log the response
       console.log('Login response:', response);
       
-      // Verify response has required fields
-      if (!response || !response.token || !response.user) {
+      // Verify response has required fields (support both token and accessToken for backward compatibility)
+      const accessToken = response.accessToken || response.token;
+      if (!response || !accessToken || !response.user) {
         throw new Error('Invalid response from server');
       }
       
-      // Save token and user to localStorage
-      setStoredUser(response.user, response.token);
+      // Save access token and user to localStorage
+      setStoredUser(response.user, accessToken);
       
       // Verify token was saved
-      const savedToken = localStorage.getItem('token');
+      const savedToken = localStorage.getItem('accessToken') || localStorage.getItem('token');
       console.log('Token saved to localStorage:', savedToken ? 'Yes' : 'No');
       
       if (!savedToken) {

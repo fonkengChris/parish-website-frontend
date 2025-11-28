@@ -103,7 +103,8 @@ export interface User {
 }
 
 export interface AuthResponse {
-  token: string;
+  accessToken?: string; // New refresh token pattern
+  token?: string; // Legacy support
   user: User;
 }
 

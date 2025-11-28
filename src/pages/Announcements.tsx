@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
+import LazyImage from '../components/LazyImage';
 import { announcementsAPI } from '../services/api';
+import { cache, CACHE_KEYS } from '../utils/cache';
 import type { Announcement } from '../types';
 
 export default function Announcements() {
@@ -11,8 +13,20 @@ export default function Announcements() {
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
+        // Check cache first
+        const cachedData = cache.get<Announcement[]>(CACHE_KEYS.ANNOUNCEMENTS);
+        if (cachedData) {
+          setAnnouncements(cachedData);
+          setLoading(false);
+          return;
+        }
+
+        // Fetch from API
         const data = await announcementsAPI.getAll();
         setAnnouncements(data);
+        
+        // Cache the result (5 minutes)
+        cache.set(CACHE_KEYS.ANNOUNCEMENTS, data, 5 * 60 * 1000);
       } catch (error) {
         console.error('Error fetching announcements:', error);
       } finally {
@@ -49,10 +63,13 @@ export default function Announcements() {
               >
                 {announcement.image && (
                   <div className="relative overflow-hidden">
-                    <img
+                    <LazyImage
                       src={announcement.image}
                       alt={announcement.title}
                       className="w-full h-56 object-cover group-hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400x300?text=Image+Not+Available';
+                      }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                   </div>
