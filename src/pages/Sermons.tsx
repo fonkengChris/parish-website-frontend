@@ -49,19 +49,19 @@ export default function Sermons() {
   return (
     <Layout>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-10">
-          <h1 className="text-5xl font-bold mb-4 text-gray-900">Sermons & Catechisis</h1>
-          <p className="text-gray-600 text-lg">
+        <div className="mb-10 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-gray-900">Sermons & Catechisis</h1>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Explore our collection of sermons, homilies, and doctrinal teachings.
           </p>
         </div>
 
         {/* Tabs */}
-        <div className="mb-8 border-b border-gray-200">
-          <nav className="flex space-x-8">
+        <div className="mb-8 border-b-2 border-gray-200 flex justify-center">
+          <nav className="flex space-x-2">
             <button
               onClick={() => setActiveTab('all')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-4 px-6 border-b-3 font-semibold text-sm transition-all duration-300 ${
                 activeTab === 'all'
                   ? 'border-primary-500 text-primary-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -71,7 +71,7 @@ export default function Sermons() {
             </button>
             <button
               onClick={() => setActiveTab('sermons')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-4 px-6 border-b-3 font-semibold text-sm transition-all duration-300 ${
                 activeTab === 'sermons'
                   ? 'border-primary-500 text-primary-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -81,7 +81,7 @@ export default function Sermons() {
             </button>
             <button
               onClick={() => setActiveTab('catechisis')}
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-4 px-6 border-b-3 font-semibold text-sm transition-all duration-300 ${
                 activeTab === 'catechisis'
                   ? 'border-primary-500 text-primary-600'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
@@ -93,17 +93,20 @@ export default function Sermons() {
         </div>
 
         {loading ? (
-          <div className="text-center py-16">
-            <p className="text-gray-600">Loading...</p>
+          <div className="text-center py-20">
+            <div className="inline-flex flex-col items-center">
+              <div className="animate-spin rounded-full h-14 w-14 border-4 border-primary-200 border-t-primary-600 mb-4"></div>
+              <p className="text-gray-500 text-lg font-medium">Loading...</p>
+            </div>
           </div>
         ) : displayContent.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-xl p-10 border-2 border-gray-100">
             <div className="text-center py-16">
               <div className="text-6xl mb-6">📖</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
                 {activeTab === 'sermons' ? 'Sermons' : activeTab === 'catechisis' ? 'Catechisis' : 'Content'} Coming Soon
               </h2>
-              <p className="text-gray-600 text-lg">
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
                 {activeTab === 'sermons' 
                   ? 'We are working on bringing you inspiring sermons and homilies from our priests. Check back soon for updates.'
                   : activeTab === 'catechisis'
@@ -117,7 +120,7 @@ export default function Sermons() {
             {displayContent.map((item) => (
               <div
                 key={item._id}
-                className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100 hover:shadow-xl transition-shadow"
+                className="bg-white rounded-2xl shadow-lg p-8 md:p-10 border border-gray-100 hover:shadow-2xl transition-all duration-300"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">

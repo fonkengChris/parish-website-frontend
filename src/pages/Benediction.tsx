@@ -28,9 +28,9 @@ export default function Benediction() {
   return (
     <Layout>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-10">
-          <h1 className="text-5xl font-bold mb-4 text-gray-900">Benediction</h1>
-          <p className="text-gray-600 text-lg">
+        <div className="mb-10 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-gray-900">Benediction</h1>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Learn about the Benediction of the Blessed Sacrament.
           </p>
         </div>

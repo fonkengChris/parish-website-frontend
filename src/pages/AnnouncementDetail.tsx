@@ -57,13 +57,13 @@ export default function AnnouncementDetail() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <Link
           to="/announcements"
-          className="text-primary-600 hover:text-primary-700 mb-8 inline-flex items-center gap-2 font-semibold group"
+          className="text-primary-600 hover:text-primary-700 mb-8 inline-flex items-center gap-2 font-semibold group px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors"
         >
           <span className="group-hover:-translate-x-1 transition-transform">←</span> Back to Announcements
         </Link>
 
         {announcement.image && (
-          <div className="rounded-2xl overflow-hidden shadow-2xl mb-8">
+          <div className="rounded-2xl overflow-hidden shadow-2xl mb-8 border-2 border-gray-200">
             <img
               src={announcement.image}
               alt={announcement.title}
@@ -72,16 +72,19 @@ export default function AnnouncementDetail() {
           </div>
         )}
 
-        <div className="bg-white rounded-2xl shadow-lg p-8 border border-gray-100">
+        <div className="bg-white rounded-2xl shadow-xl p-8 md:p-10 border border-gray-100">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900">{announcement.title}</h1>
           <div className="flex items-center gap-3 mb-8 pb-6 border-b-2 border-gray-100">
-            <span className="text-primary-600 font-semibold">
-              {new Date(announcement.date).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">📅</span>
+              <span className="text-primary-600 font-semibold text-lg">
+                {new Date(announcement.date).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </span>
+            </div>
           </div>
 
           <div className="prose max-w-none">

@@ -494,3 +494,23 @@ export const liturgicalColorOverridesAPI = {
   },
 };
 
+// Contact API
+export interface ContactFormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
+export interface ContactResponse {
+  message: string;
+  success: boolean;
+}
+
+export const contactAPI = {
+  submit: async (formData: ContactFormData): Promise<ContactResponse> => {
+    const { data } = await api.post<ContactResponse>('/contact', formData);
+    return data;
+  },
+};
+

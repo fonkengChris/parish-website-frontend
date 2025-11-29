@@ -83,23 +83,24 @@ export default function Navbar() {
   );
 
   return (
-    <nav className="bg-primary-700 text-white shadow-lg">
+    <nav className="sticky top-0 z-50 bg-gradient-to-r from-primary-700 via-primary-600 to-primary-700 text-white shadow-xl border-b border-primary-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link to="/" className="text-xl font-bold">
+          <Link to="/" className="text-xl md:text-2xl font-bold hover:text-primary-100 transition-colors duration-200 flex items-center gap-2">
+            <span className="text-2xl">⛪</span>
             {PARISH_NAME}
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden md:flex items-center space-x-1">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                   isActive(link.path)
-                    ? 'bg-primary-900 text-white'
-                    : 'text-primary-100 hover:bg-primary-600 hover:text-white'
+                    ? 'bg-white text-primary-700 shadow-md'
+                    : 'text-primary-100 hover:bg-primary-500/50 hover:text-white'
                 }`}
               >
                 {link.label}
@@ -109,15 +110,15 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setShowCatholicFaithMenu(!showCatholicFaithMenu)}
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center gap-1 ${
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 flex items-center gap-1 ${
                   isCatholicFaithActive
-                    ? 'bg-primary-900 text-white'
-                    : 'text-primary-100 hover:bg-primary-600 hover:text-white'
+                    ? 'bg-white text-primary-700 shadow-md'
+                    : 'text-primary-100 hover:bg-primary-500/50 hover:text-white'
                 }`}
               >
                 Catholic Faith
                 <svg
-                  className={`w-4 h-4 transition-transform ${showCatholicFaithMenu ? 'rotate-180' : ''}`}
+                  className={`w-4 h-4 transition-transform duration-200 ${showCatholicFaithMenu ? 'rotate-180' : ''}`}
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -134,16 +135,16 @@ export default function Navbar() {
                     className="fixed inset-0 z-10"
                     onClick={() => setShowCatholicFaithMenu(false)}
                   ></div>
-                  <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+                  <div className="absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-20 border border-gray-100">
                     {catholicFaithLinks.map((link) => (
                       <Link
                         key={link.path}
                         to={link.path}
                         onClick={() => setShowCatholicFaithMenu(false)}
-                        className={`block px-4 py-2 text-sm transition-colors ${
+                        className={`block px-4 py-3 text-sm transition-all duration-200 ${
                           isActive(link.path)
-                            ? 'bg-primary-100 text-primary-700 font-medium'
-                            : 'text-gray-700 hover:bg-gray-100'
+                            ? 'bg-primary-50 text-primary-700 font-semibold border-l-4 border-primary-600'
+                            : 'text-gray-700 hover:bg-gray-50 hover:pl-5'
                         }`}
                       >
                         {link.label}
@@ -156,10 +157,10 @@ export default function Navbar() {
             {user && (user.role === 'admin' || user.role === 'editor') && (
               <Link
                 to="/admin/dashboard"
-                className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                   isActive('/admin/dashboard') || location.pathname.startsWith('/admin/')
-                    ? 'bg-primary-900 text-white'
-                    : 'text-primary-100 hover:bg-primary-600 hover:text-white'
+                    ? 'bg-white text-primary-700 shadow-md'
+                    : 'text-primary-100 hover:bg-primary-500/50 hover:text-white'
                 }`}
               >
                 Admin
@@ -169,7 +170,7 @@ export default function Navbar() {
               <div className="relative">
                 <button
                   onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center justify-center w-10 h-10 rounded-full bg-primary-500 hover:bg-primary-400 text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-primary-300 transition-colors"
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-primary-300 focus:ring-offset-2 focus:ring-offset-primary-700 transition-all duration-200 shadow-md hover:shadow-lg"
                   aria-label="User menu"
                 >
                   {getUserInitials(user)}
@@ -182,35 +183,36 @@ export default function Navbar() {
                       className="fixed inset-0 z-10"
                       onClick={() => setShowUserMenu(false)}
                     ></div>
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
-                      <div className="px-4 py-2 border-b border-gray-200">
-                        <p className="text-sm font-medium text-gray-900">{getUserDisplayName(user)}</p>
-                        <p className="text-xs text-gray-500 capitalize">{user.role}</p>
+                    <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl py-2 z-20 border border-gray-100">
+                      <div className="px-4 py-3 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-primary-100">
+                        <p className="text-sm font-semibold text-gray-900">{getUserDisplayName(user)}</p>
+                        <p className="text-xs text-primary-600 capitalize font-medium">{user.role}</p>
                       </div>
                       <Link
                         to="/profile"
                         onClick={() => setShowUserMenu(false)}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200"
                       >
                         View Profile
                       </Link>
                       <Link
                         to="/profile/edit"
                         onClick={() => setShowUserMenu(false)}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200"
                       >
                         Edit Profile
                       </Link>
                       <Link
                         to="/profile/change-password"
                         onClick={() => setShowUserMenu(false)}
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200"
                       >
                         Change Password
                       </Link>
+                      <div className="border-t border-gray-200 my-1"></div>
                       <button
                         onClick={handleLogout}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200 font-medium"
                       >
                         Logout
                       </button>
@@ -221,7 +223,7 @@ export default function Navbar() {
             ) : (
               <Link
                 to="/admin/login"
-                className="px-3 py-2 rounded-md text-sm font-medium bg-primary-500 hover:bg-primary-400 text-white"
+                className="px-4 py-2 rounded-lg text-sm font-semibold bg-white text-primary-700 hover:bg-primary-50 shadow-md hover:shadow-lg transition-all duration-200"
               >
                 Login
               </Link>
@@ -230,12 +232,12 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden p-2 rounded-md text-primary-100 hover:bg-primary-600"
+            className="md:hidden p-2 rounded-lg text-primary-100 hover:bg-primary-500/50 transition-all duration-200"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
             <svg
-              className="h-6 w-6"
+              className="h-6 w-6 transition-transform duration-200"
               fill="none"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -254,16 +256,16 @@ export default function Navbar() {
 
         {/* Mobile Navigation */}
         {isOpen && (
-          <div className="md:hidden py-4 space-y-2">
+          <div className="md:hidden py-4 space-y-2 bg-primary-800/50 rounded-lg mt-2 mb-2">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={() => setIsOpen(false)}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                className={`block px-4 py-3 rounded-lg text-base font-semibold transition-all duration-200 ${
                   isActive(link.path)
-                    ? 'bg-primary-900 text-white'
-                    : 'text-primary-100 hover:bg-primary-600 hover:text-white'
+                    ? 'bg-white text-primary-700 shadow-md'
+                    : 'text-primary-100 hover:bg-primary-500/50 hover:text-white'
                 }`}
               >
                 {link.label}
@@ -273,15 +275,15 @@ export default function Navbar() {
             <div>
               <button
                 onClick={() => setShowCatholicFaithMenu(!showCatholicFaithMenu)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-md text-base font-medium ${
+                className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-base font-semibold transition-all duration-200 ${
                   isCatholicFaithActive
-                    ? 'bg-primary-900 text-white'
-                    : 'text-primary-100 hover:bg-primary-600 hover:text-white'
+                    ? 'bg-white text-primary-700 shadow-md'
+                    : 'text-primary-100 hover:bg-primary-500/50 hover:text-white'
                 }`}
               >
                 Catholic Faith
                 <svg
-                  className={`w-5 h-5 transition-transform ${showCatholicFaithMenu ? 'rotate-180' : ''}`}
+                  className={`w-5 h-5 transition-transform duration-200 ${showCatholicFaithMenu ? 'rotate-180' : ''}`}
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -293,7 +295,7 @@ export default function Navbar() {
                 </svg>
               </button>
               {showCatholicFaithMenu && (
-                <div className="pl-6 mt-2 space-y-1">
+                <div className="pl-4 mt-2 space-y-1">
                   {catholicFaithLinks.map((link) => (
                     <Link
                       key={link.path}
@@ -302,10 +304,10 @@ export default function Navbar() {
                         setIsOpen(false);
                         setShowCatholicFaithMenu(false);
                       }}
-                      className={`block px-3 py-2 rounded-md text-base font-medium ${
+                      className={`block px-4 py-2 rounded-lg text-base font-medium transition-all duration-200 ${
                         isActive(link.path)
-                          ? 'bg-primary-800 text-white'
-                          : 'text-primary-200 hover:bg-primary-700 hover:text-white'
+                          ? 'bg-primary-700 text-white'
+                          : 'text-primary-200 hover:bg-primary-500/50 hover:text-white'
                       }`}
                     >
                       {link.label}
@@ -318,44 +320,44 @@ export default function Navbar() {
               <Link
                 to="/admin/dashboard"
                 onClick={() => setIsOpen(false)}
-                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                className={`block px-4 py-3 rounded-lg text-base font-semibold transition-all duration-200 ${
                   isActive('/admin/dashboard') || location.pathname.startsWith('/admin/')
-                    ? 'bg-primary-900 text-white'
-                    : 'text-primary-100 hover:bg-primary-600 hover:text-white'
+                    ? 'bg-white text-primary-700 shadow-md'
+                    : 'text-primary-100 hover:bg-primary-500/50 hover:text-white'
                 }`}
               >
                 Admin
               </Link>
             )}
             {user ? (
-              <div className="px-3 py-2 space-y-2">
+              <div className="px-4 py-3 space-y-2 bg-primary-800/30 rounded-lg">
                 <div className="flex items-center space-x-3 px-2 py-2 border-b border-primary-600">
-                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary-500 text-white font-semibold text-sm">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-primary-600 text-white font-semibold text-sm shadow-md">
                     {getUserInitials(user)}
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-white">{getUserDisplayName(user)}</p>
-                    <p className="text-xs text-primary-200 capitalize">{user.role}</p>
+                    <p className="text-sm font-semibold text-white">{getUserDisplayName(user)}</p>
+                    <p className="text-xs text-primary-200 capitalize font-medium">{user.role}</p>
                   </div>
                 </div>
                 <Link
                   to="/profile"
                   onClick={() => setIsOpen(false)}
-                  className="block px-3 py-2 rounded-md text-base font-medium text-primary-100 hover:bg-primary-600 hover:text-white"
+                  className="block px-4 py-3 rounded-lg text-base font-medium text-primary-100 hover:bg-primary-500/50 hover:text-white transition-all duration-200"
                 >
                   View Profile
                 </Link>
                 <Link
                   to="/profile/edit"
                   onClick={() => setIsOpen(false)}
-                  className="block px-3 py-2 rounded-md text-base font-medium text-primary-100 hover:bg-primary-600 hover:text-white"
+                  className="block px-4 py-3 rounded-lg text-base font-medium text-primary-100 hover:bg-primary-500/50 hover:text-white transition-all duration-200"
                 >
                   Edit Profile
                 </Link>
                 <Link
                   to="/profile/change-password"
                   onClick={() => setIsOpen(false)}
-                  className="block px-3 py-2 rounded-md text-base font-medium text-primary-100 hover:bg-primary-600 hover:text-white"
+                  className="block px-4 py-3 rounded-lg text-base font-medium text-primary-100 hover:bg-primary-500/50 hover:text-white transition-all duration-200"
                 >
                   Change Password
                 </Link>
@@ -364,7 +366,7 @@ export default function Navbar() {
                     handleLogout();
                     setIsOpen(false);
                   }}
-                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium bg-primary-500 hover:bg-primary-400 text-white"
+                  className="block w-full text-left px-4 py-3 rounded-lg text-base font-semibold bg-primary-500 hover:bg-primary-400 text-white transition-all duration-200 shadow-md hover:shadow-lg"
                 >
                   Logout
                 </button>
@@ -373,7 +375,7 @@ export default function Navbar() {
               <Link
                 to="/admin/login"
                 onClick={() => setIsOpen(false)}
-                className="block px-3 py-2 rounded-md text-base font-medium bg-primary-500 hover:bg-primary-400 text-white"
+                className="block px-4 py-3 rounded-lg text-base font-semibold bg-white text-primary-700 hover:bg-primary-50 transition-all duration-200 shadow-md hover:shadow-lg text-center"
               >
                 Login
               </Link>

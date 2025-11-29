@@ -1163,9 +1163,9 @@ export default function OrderOfTheMass() {
   return (
     <Layout>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-10">
-          <h1 className="text-5xl font-bold mb-4 text-gray-900">Order of the Mass</h1>
-          <p className="text-gray-600 text-lg">
+        <div className="mb-10 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-gray-900">Order of the Mass</h1>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Learn about the structure and order of the Catholic Mass in both the Ordinary and Extraordinary forms.
           </p>
         </div>

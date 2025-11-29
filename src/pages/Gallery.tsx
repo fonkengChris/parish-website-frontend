@@ -39,21 +39,24 @@ export default function Gallery() {
   return (
     <Layout>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-12">
-          <h1 className="text-5xl font-bold mb-4 text-gray-900">Gallery</h1>
-          <p className="text-gray-600 text-lg">
+        <div className="mb-12 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 text-gray-900">Gallery</h1>
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Photos and videos from our parish events and activities.
           </p>
         </div>
 
         {loading ? (
-          <div className="text-center py-16">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mb-4"></div>
-            <p className="text-gray-500 text-lg">Loading gallery...</p>
+          <div className="text-center py-20">
+            <div className="inline-flex flex-col items-center">
+              <div className="animate-spin rounded-full h-14 w-14 border-4 border-primary-200 border-t-primary-600 mb-4"></div>
+              <p className="text-gray-500 text-lg font-medium">Loading gallery...</p>
+            </div>
           </div>
         ) : items.length === 0 ? (
-          <div className="text-center py-16 bg-gray-50 rounded-2xl">
-            <p className="text-gray-500 text-lg">No gallery items at this time.</p>
+          <div className="text-center py-20 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border-2 border-gray-200">
+            <div className="text-6xl mb-4">📷</div>
+            <p className="text-gray-600 text-lg font-medium">No gallery items at this time.</p>
           </div>
         ) : (
           <>
