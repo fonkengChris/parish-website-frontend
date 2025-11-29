@@ -1,26 +1,46 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { announcementsAPI } from '../services/api';
+import { announcementsAPI, eventsAPI } from '../services/api';
 import { PARISH_NAME, PARISH_DIOCESE } from '../components/Map';
-import type { Announcement } from '../types';
+import type { Announcement, Event } from '../types';
 
 export default function Home() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchAnnouncements = async () => {
+    const fetchData = async () => {
       try {
-        const data = await announcementsAPI.getAll();
-        setAnnouncements(data.slice(0, 3)); // Show latest 3
+        // Fetch announcements and events in parallel
+        const [announcementsData, eventsData] = await Promise.all([
+          announcementsAPI.getAll(),
+          eventsAPI.getAll()
+        ]);
+        
+        setAnnouncements(announcementsData.slice(0, 3)); // Show latest 3
+        
+        // Filter events for next 7 days
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const sevenDaysLater = new Date(today);
+        sevenDaysLater.setDate(sevenDaysLater.getDate() + 7);
+        
+        const upcomingEvents = eventsData.filter(event => {
+          const eventDate = new Date(event.startDate);
+          eventDate.setHours(0, 0, 0, 0);
+          return eventDate >= today && eventDate <= sevenDaysLater;
+        }).slice(0, 3); // Show latest 3
+        
+        setEvents(upcomingEvents);
       } catch (error) {
-        console.error('Error fetching announcements:', error);
+        console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     };
-    fetchAnnouncements();
+    fetchData();
   }, []);
 
   return (
@@ -177,36 +197,46 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Latest Announcements */}
+      {/* Latest Announcements & Upcoming Events */}
       <section className="py-20 bg-gradient-to-b from-white via-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-12 gap-4">
             <div>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">Latest Announcements</h2>
-              <p className="text-gray-600 text-lg">Stay informed about parish news and events</p>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-2">Latest News & Upcoming Events</h2>
+              <p className="text-gray-600 text-lg">Stay informed about parish news and upcoming events</p>
             </div>
-            <Link
-              to="/announcements"
-              className="text-primary-600 hover:text-primary-700 font-semibold inline-flex items-center gap-2 group px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors"
-            >
-              View All 
-              <span className="group-hover:translate-x-1 transition-transform">→</span>
-            </Link>
+            <div className="flex gap-4">
+              <Link
+                to="/announcements"
+                className="text-primary-600 hover:text-primary-700 font-semibold inline-flex items-center gap-2 group px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors"
+              >
+                All Announcements 
+                <span className="group-hover:translate-x-1 transition-transform">→</span>
+              </Link>
+              <Link
+                to="/events"
+                className="text-primary-600 hover:text-primary-700 font-semibold inline-flex items-center gap-2 group px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors"
+              >
+                All Events 
+                <span className="group-hover:translate-x-1 transition-transform">→</span>
+              </Link>
+            </div>
           </div>
           {loading ? (
             <div className="text-center py-20">
               <div className="inline-flex flex-col items-center">
                 <div className="animate-spin rounded-full h-14 w-14 border-4 border-primary-200 border-t-primary-600 mb-4"></div>
-                <p className="text-gray-500 text-lg font-medium">Loading announcements...</p>
+                <p className="text-gray-500 text-lg font-medium">Loading content...</p>
               </div>
             </div>
-          ) : announcements.length === 0 ? (
+          ) : announcements.length === 0 && events.length === 0 ? (
             <div className="text-center py-20 bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border-2 border-gray-200">
               <div className="text-6xl mb-4">📭</div>
-              <p className="text-gray-600 text-lg font-medium">No announcements at this time.</p>
+              <p className="text-gray-600 text-lg font-medium">No announcements or events at this time.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {/* Announcements */}
               {announcements.map((announcement) => (
                 <Link
                   key={announcement._id}
@@ -221,6 +251,21 @@ export default function Home() {
                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent"></div>
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 bg-primary-600 text-white text-xs font-semibold rounded-full">
+                          Announcement
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  {!announcement.image && (
+                    <div className="relative overflow-hidden h-56 bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
+                      <div className="text-6xl text-white opacity-80">📢</div>
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 bg-white text-primary-600 text-xs font-semibold rounded-full">
+                          Announcement
+                        </span>
+                      </div>
                     </div>
                   )}
                   <div className="p-6">
@@ -239,6 +284,72 @@ export default function Home() {
                       <span className="text-primary-600 text-sm font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                         Read More <span>→</span>
                       </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+              
+              {/* Upcoming Events */}
+              {events.map((event) => (
+                <Link
+                  key={event._id}
+                  to="/events"
+                  className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 group"
+                >
+                  {event.image && (
+                    <div className="relative overflow-hidden h-56">
+                      <img
+                        src={event.image}
+                        alt={event.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent"></div>
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 bg-orange-600 text-white text-xs font-semibold rounded-full">
+                          Event
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  {!event.image && (
+                    <div className="relative overflow-hidden h-56 bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
+                      <div className="text-6xl text-white opacity-80">📅</div>
+                      <div className="absolute top-4 left-4">
+                        <span className="px-3 py-1 bg-white text-orange-600 text-xs font-semibold rounded-full">
+                          Event
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold mb-3 text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2">{event.title}</h3>
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+                      {event.description}
+                    </p>
+                    <div className="space-y-2 pt-4 border-t border-gray-100">
+                      <div className="flex items-start gap-2">
+                        <span className="text-primary-600 text-sm font-semibold">📅</span>
+                        <p className="text-primary-600 text-xs font-semibold flex-1">
+                          {new Date(event.startDate).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit'
+                          })}
+                        </p>
+                      </div>
+                      {event.location && (
+                        <div className="flex items-start gap-2">
+                          <span className="text-primary-600 text-sm font-semibold">📍</span>
+                          <p className="text-gray-600 text-xs flex-1 line-clamp-1">{event.location}</p>
+                        </div>
+                      )}
+                      <div className="flex items-center justify-end pt-2">
+                        <span className="text-primary-600 text-sm font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                          View Details <span>→</span>
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </Link>
