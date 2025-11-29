@@ -74,10 +74,11 @@ export default function Contact() {
         }
       } else {
         // For admin/editor, use username if available, otherwise use email prefix as fallback
-        if (user.username) {
+        const username = user.username;
+        if (username) {
           setFormData(prev => ({
             ...prev,
-            name: user.username,
+            name: username,
           }));
         } else if (user.email) {
           // Extract name from email (part before @) as fallback
