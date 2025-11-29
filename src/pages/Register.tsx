@@ -323,7 +323,7 @@ export default function Register() {
           <div className="mt-6 text-center text-sm text-gray-600">
             <p>
               Already registered?{' '}
-              <Link to="/admin/login" className="font-semibold text-primary-600 hover:text-primary-700 transition-colors">
+              <Link to="/login" className="font-semibold text-primary-600 hover:text-primary-700 transition-colors">
                 Login
               </Link>
             </p>

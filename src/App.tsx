@@ -22,9 +22,9 @@ import Register from './pages/Register';
 import ViewProfile from './pages/ViewProfile';
 import EditProfile from './pages/Profile';
 import ChangePassword from './pages/ChangePassword';
+import Login from './pages/Login';
 
 // Admin Pages
-import AdminLogin from './pages/admin/Login';
 import AdminDashboard from './pages/admin/Dashboard';
 import ManageAnnouncements from './pages/admin/ManageAnnouncements';
 import ManageMassSchedule from './pages/admin/ManageMassSchedule';
@@ -68,10 +68,11 @@ function App() {
         <Route path="/profile/:id" element={<ViewProfile />} />
         <Route path="/profile/edit" element={<EditProfile />} />
         <Route path="/profile/edit/:id" element={<EditProfile />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/profile/change-password" element={<ChangePassword />} />
 
         {/* Admin Routes */}
-        <Route path="/admin/login" element={<AdminLogin />} />
+        {/* <Route path="/admin/login" element={<AdminLogin />} /> */}
         <Route
           path="/admin/dashboard"
           element={
