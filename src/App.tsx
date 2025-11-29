@@ -9,6 +9,7 @@ import AboutUs from './pages/AboutUs';
 import MassSchedule from './pages/MassSchedule';
 import Announcements from './pages/Announcements';
 import AnnouncementDetail from './pages/AnnouncementDetail';
+import Events from './pages/Events';
 import Ministries from './pages/Ministries';
 import Sacraments from './pages/Sacraments';
 import Gallery from './pages/Gallery';
@@ -53,6 +54,7 @@ function App() {
         <Route path="/mass-schedule" element={<MassSchedule />} />
         <Route path="/announcements" element={<Announcements />} />
         <Route path="/announcements/:id" element={<AnnouncementDetail />} />
+        <Route path="/events" element={<Events />} />
         <Route path="/ministries" element={<Ministries />} />
         <Route path="/sacraments" element={<Sacraments />} />
         <Route path="/gallery" element={<Gallery />} />

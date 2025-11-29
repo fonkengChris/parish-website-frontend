@@ -55,6 +55,15 @@ export default function Footer() {
               </li>
               <li>
                 <Link 
+                  to="/events" 
+                  className="text-gray-300 hover:text-white transition-all duration-200 flex items-center group hover:translate-x-1"
+                >
+                  <span className="w-2 h-2 bg-primary-400 rounded-full mr-3 group-hover:bg-primary-300 group-hover:w-2.5 group-hover:h-2.5 transition-all"></span>
+                  Events
+                </Link>
+              </li>
+              <li>
+                <Link 
                   to="/prayers" 
                   className="text-gray-300 hover:text-white transition-all duration-200 flex items-center group hover:translate-x-1"
                 >

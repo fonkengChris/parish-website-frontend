@@ -108,7 +108,7 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Parish Highlights</h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">Discover what makes our community special</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 group">
               <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform">
                 ⛪
@@ -138,6 +138,22 @@ export default function Home() {
                 className="text-primary-600 hover:text-primary-700 font-semibold mt-4 inline-flex items-center gap-2 group/link"
               >
                 Learn More 
+                <span className="group-hover/link:translate-x-1 transition-transform">→</span>
+              </Link>
+            </div>
+            <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 group">
+              <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform">
+                📅
+              </div>
+              <h3 className="text-2xl font-bold mb-3 text-gray-900">Events</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Discover upcoming parish events, celebrations, and gatherings.
+              </p>
+              <Link
+                to="/events"
+                className="text-primary-600 hover:text-primary-700 font-semibold mt-4 inline-flex items-center gap-2 group/link"
+              >
+                View Events 
                 <span className="group-hover/link:translate-x-1 transition-transform">→</span>
               </Link>
             </div>
