@@ -65,7 +65,7 @@ export default function Navbar() {
     { path: '/', label: 'Home' },
     { path: '/about-us', label: 'About Us' },
     { path: '/mass-schedule', label: 'Mass Schedule' },
-    { path: '/announcements', label: 'News & Announcements' },
+    { path: '/announcements', label: 'Announcements' },
     { path: '/gallery', label: 'Gallery' },
     { path: '/contact', label: 'Contact' },
   ];
