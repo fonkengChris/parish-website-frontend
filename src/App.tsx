@@ -36,6 +36,7 @@ import ManagePrayers from './pages/admin/ManagePrayers';
 import ManageSermons from './pages/admin/ManageSermons';
 import ManageMissionStations from './pages/admin/ManageMissionStations';
 import ManageLiturgicalColors from './pages/admin/ManageLiturgicalColors';
+import ManageUsers from './pages/admin/ManageUsers';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -152,6 +153,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ManageLiturgicalColors />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute>
+              <ManageUsers />
             </ProtectedRoute>
           }
         />

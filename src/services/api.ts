@@ -9,6 +9,7 @@ import type {
   Parishioner,
   Prayer,
   Sermon,
+  User,
   AuthResponse 
 } from '../types';
 
@@ -510,6 +511,34 @@ export interface ContactResponse {
 export const contactAPI = {
   submit: async (formData: ContactFormData): Promise<ContactResponse> => {
     const { data } = await api.post<ContactResponse>('/contact', formData);
+    return data;
+  },
+};
+
+// Users API (Admin/Parish-Priest only)
+export interface UserWithDetails extends User {
+  _id: string;
+  createdAt?: string;
+  updatedAt?: string;
+  parishioner?: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email?: string;
+  } | string;
+}
+
+export const usersAPI = {
+  getAll: async (): Promise<UserWithDetails[]> => {
+    const { data } = await api.get<UserWithDetails[]>('/users');
+    return data;
+  },
+  getById: async (id: string): Promise<UserWithDetails> => {
+    const { data } = await api.get<UserWithDetails>(`/users/${id}`);
+    return data;
+  },
+  updateRole: async (id: string, role: User['role']): Promise<UserWithDetails> => {
+    const { data } = await api.put<UserWithDetails>(`/users/${id}/role`, { role });
     return data;
   },
 };

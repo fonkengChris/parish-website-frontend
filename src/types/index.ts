@@ -99,7 +99,7 @@ export interface User {
   id: string;
   username?: string; // Optional for parishioner role
   email?: string; // Optional for admin/editor roles
-  role: 'admin' | 'editor' | 'parishioner';
+  role: 'admin' | 'editor' | 'priest' | 'parish-priest' | 'parishioner';
 }
 
 export interface AuthResponse {
