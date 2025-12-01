@@ -122,7 +122,7 @@ export default function Home() {
       </section>
 
       {/* Highlights Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 via-white to-gray-50">
+      {/* <section className="py-20 bg-gradient-to-b from-gray-50 via-white to-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Parish Highlights</h2>
@@ -192,6 +192,52 @@ export default function Home() {
                 Read More 
                 <span className="group-hover/link:translate-x-1 transition-transform">→</span>
               </Link>
+            </div>
+          </div>
+        </div>
+      </section> */}
+
+      {/* Encouragement to Grow in Faith */}
+      <section className="py-16 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900">Grow in Your Faith</h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Nourish your soul each day through Scripture and the teaching of the Church.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-100 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Immerse Yourself in the Holy Bible</h3>
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                Make a habit of reading the Scriptures daily. God speaks to us through His Word,
+                strengthening, guiding, and consoling us in every circumstance.
+              </p>
+              <a
+                href="https://catenabible.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-blue-700 font-semibold hover:text-blue-800"
+              >
+                Read the Bible online
+                <span>↗</span>
+              </a>
+            </div>
+            <div className="bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-100 rounded-2xl p-8 shadow-sm hover:shadow-md transition-shadow">
+              <h3 className="text-2xl font-bold text-gray-900 mb-3">Deepen Your Faith with the Catechism</h3>
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                The Catechism of the Catholic Church presents the faith clearly and completely.
+                Regular reading will help you better understand what the Church believes and teaches.
+              </p>
+              <a
+                href="https://www.vatican.va/archive/ENG0015/_INDEX.HTM"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-amber-700 font-semibold hover:text-amber-800"
+              >
+                Read the Catechism online
+                <span>↗</span>
+              </a>
             </div>
           </div>
         </div>
