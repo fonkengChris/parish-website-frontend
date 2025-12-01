@@ -1,6 +1,6 @@
 import type { PrayerCategory } from '../types';
 
-export const DAYS_OF_WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'] as const;
+export const DAYS_OF_WEEK = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'] as const;
 
 export type MassScheduleType = 'Mass' | 'Confession' | 'Adoration' | 'Other';
 export const MASS_SCHEDULE_TYPES: MassScheduleType[] = ['Mass', 'Confession', 'Adoration', 'Other'];

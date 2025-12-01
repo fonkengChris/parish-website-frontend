@@ -62,13 +62,71 @@ export default function ManageMassSchedule() {
     }
   }, [navigate, fetchData]);
 
+  // Convert 12-hour time format to 24-hour format
+  const convertTo24Hour = (time12h: string): string => {
+    // Handle already 24-hour format (HH:MM)
+    if (/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(time12h)) {
+      return time12h;
+    }
+
+    // Parse 12-hour format (e.g., "4:00 PM" or "11:30 AM")
+    const match = time12h.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
+    if (!match) {
+      throw new Error('Invalid time format. Please use format like "4:00 PM" or "16:00"');
+    }
+
+    let hours = parseInt(match[1], 10);
+    const minutes = match[2];
+    const period = match[3].toUpperCase();
+
+    if (period === 'PM' && hours !== 12) {
+      hours += 12;
+    } else if (period === 'AM' && hours === 12) {
+      hours = 0;
+    }
+
+    return `${hours.toString().padStart(2, '0')}:${minutes}`;
+  };
+
+  // Convert 24-hour time format to 12-hour format
+  const convertTo12Hour = (time24h: string): string => {
+    // Handle already 12-hour format
+    if (/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i.test(time24h)) {
+      return time24h;
+    }
+
+    // Parse 24-hour format (e.g., "16:00" or "08:30")
+    const match = time24h.match(/^(\d{1,2}):(\d{2})$/);
+    if (!match) {
+      return time24h; // Return as-is if can't parse
+    }
+
+    let hours = parseInt(match[1], 10);
+    const minutes = match[2];
+    const period = hours >= 12 ? 'PM' : 'AM';
+
+    if (hours === 0) {
+      hours = 12;
+    } else if (hours > 12) {
+      hours -= 12;
+    }
+
+    return `${hours}:${minutes} ${period}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      // Convert time to 24-hour format
+      const submitData = {
+        ...formData,
+        time: convertTo24Hour(formData.time),
+      };
+
       if (editing) {
-        await massScheduleAPI.update(editing._id, formData);
+        await massScheduleAPI.update(editing._id, submitData);
       } else {
-        await massScheduleAPI.create(formData);
+        await massScheduleAPI.create(submitData);
       }
       setShowForm(false);
       setEditing(null);
@@ -83,7 +141,7 @@ export default function ManageMassSchedule() {
       fetchData();
     } catch (error) {
       console.error('Error saving schedule:', error);
-      alert('Failed to save schedule');
+      alert(error instanceof Error ? error.message : 'Failed to save schedule');
     }
   };
 
@@ -94,10 +152,13 @@ export default function ManageMassSchedule() {
       ? schedule.missionStation._id
       : schedule.missionStation;
     
+    // Convert dayOfWeek to lowercase for form (backend expects lowercase)
+    const dayOfWeekLower = schedule.dayOfWeek.toLowerCase() as typeof DAYS_OF_WEEK[number];
+    
     setFormData({
       missionStation: stationId,
-      dayOfWeek: schedule.dayOfWeek as typeof DAYS_OF_WEEK[number],
-      time: schedule.time,
+      dayOfWeek: dayOfWeekLower,
+      time: convertTo12Hour(schedule.time), // Convert 24-hour to 12-hour for display
       type: schedule.type as MassScheduleType,
       description: schedule.description || '',
       isActive: schedule.isActive || true,
@@ -429,10 +490,14 @@ export default function ManageMassSchedule() {
                       {stationSchedules.map((schedule) => (
                         <tr key={schedule._id} className="hover:bg-gray-50 transition-colors">
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-semibold text-gray-900">{schedule.dayOfWeek}</div>
+                            <div className="text-sm font-semibold text-gray-900">
+                              {schedule.dayOfWeek.charAt(0).toUpperCase() + schedule.dayOfWeek.slice(1)}
+                            </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-gray-900">{schedule.time}</div>
+                            <div className="text-sm font-medium text-gray-900">
+                              {convertTo12Hour(schedule.time)}
+                            </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm text-gray-600">{schedule.type}</div>
