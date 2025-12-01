@@ -366,6 +366,7 @@ export default function Home() {
                         </div>
                         <div className="flex-1 flex items-center justify-center">
                           <span className="text-3xl font-extrabold text-gray-900">
+                            {new Date(event.startDate).getMonth()},
                             {new Date(event.startDate).getDate()}
                           </span>
                         </div>
