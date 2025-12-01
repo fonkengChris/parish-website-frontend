@@ -42,7 +42,7 @@ export default function ManageSermons() {
     setUser(currentUser);
     
     if (!currentUser) {
-      navigate('/admin/login');
+      navigate('/login');
       return;
     }
 

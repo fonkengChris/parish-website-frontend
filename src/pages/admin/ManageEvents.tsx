@@ -45,7 +45,7 @@ export default function ManageEvents() {
     setUser(currentUser);
     
     if (!currentUser) {
-      navigate('/admin/login');
+      navigate('/login');
       return;
     }
 

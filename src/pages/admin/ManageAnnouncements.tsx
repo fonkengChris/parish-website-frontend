@@ -36,7 +36,7 @@ export default function ManageAnnouncements() {
     setUser(currentUser);
     
     if (!currentUser) {
-      navigate('/admin/login');
+      navigate('/login');
       return;
     }
 

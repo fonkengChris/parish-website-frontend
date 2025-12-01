@@ -66,7 +66,7 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    const isLoginPage = window.location.pathname === '/admin/login';
+    const isLoginPage = window.location.pathname === '/login';
     
     // If 401 and not already retrying and not on login page
     if (error.response?.status === 401 && !originalRequest._retry && !isLoginPage) {
@@ -105,7 +105,7 @@ api.interceptors.response.use(
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         if (!isLoginPage) {
-          window.location.href = '/admin/login';
+          window.location.href = '/login';
         }
         return Promise.reject(refreshError);
       } finally {

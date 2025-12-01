@@ -222,7 +222,7 @@ export default function Navbar() {
               </div>
             ) : (
               <Link
-                to="/admin/login"
+                to="/login"
                 className="px-4 py-2 rounded-lg text-sm font-semibold bg-white text-primary-700 hover:bg-primary-50 shadow-md hover:shadow-lg transition-all duration-200"
               >
                 Login
@@ -373,7 +373,7 @@ export default function Navbar() {
               </div>
             ) : (
               <Link
-                to="/admin/login"
+                to="/login"
                 onClick={() => setIsOpen(false)}
                 className="block px-4 py-3 rounded-lg text-base font-semibold bg-white text-primary-700 hover:bg-primary-50 transition-all duration-200 shadow-md hover:shadow-lg text-center"
               >

@@ -87,7 +87,7 @@ export default function ManageLiturgicalColors() {
     setUser(currentUser);
     
     if (!currentUser) {
-      navigate('/admin/login');
+      navigate('/login');
       return;
     }
     

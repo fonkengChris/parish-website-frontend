@@ -56,7 +56,7 @@ export default function AdminDashboard() {
     setUser(currentUser);
     
     if (!currentUser) {
-      navigate('/admin/login');
+      navigate('/login');
       return;
     }
 
@@ -69,7 +69,7 @@ export default function AdminDashboard() {
 
   const handleLogout = () => {
     clearStoredAuth();
-    navigate('/admin/login');
+    navigate('/login');
   };
 
   if (!user) return null;

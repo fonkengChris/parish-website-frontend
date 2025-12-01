@@ -55,7 +55,7 @@ export default function ManageGallery() {
     setUser(currentUser);
     
     if (!currentUser) {
-      navigate('/admin/login');
+      navigate('/login');
       return;
     }
 

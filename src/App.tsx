@@ -38,7 +38,7 @@ import ManageLiturgicalColors from './pages/admin/ManageLiturgicalColors';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  return isAuthenticated() ? <>{children}</> : <Navigate to="/admin/login" replace />;
+  return isAuthenticated() ? <>{children}</> : <Navigate to="/login" replace />;
 };
 
 function App() {
@@ -72,7 +72,7 @@ function App() {
         <Route path="/profile/change-password" element={<ChangePassword />} />
 
         {/* Admin Routes */}
-        {/* <Route path="/admin/login" element={<AdminLogin />} /> */}
+        {/* <Route path="/login" element={<AdminLogin />} /> */}
         <Route
           path="/admin/dashboard"
           element={

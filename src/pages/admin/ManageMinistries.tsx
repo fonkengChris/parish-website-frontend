@@ -38,7 +38,7 @@ export default function ManageMinistries() {
     setUser(currentUser);
     
     if (!currentUser) {
-      navigate('/admin/login');
+      navigate('/login');
       return;
     }
 

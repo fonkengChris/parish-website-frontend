@@ -36,7 +36,7 @@ export default function ManageMissionStations() {
     setUser(currentUser);
     
     if (!currentUser) {
-      navigate('/admin/login');
+      navigate('/login');
       return;
     }
 
