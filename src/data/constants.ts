@@ -8,6 +8,8 @@ export const MASS_SCHEDULE_TYPES: MassScheduleType[] = ['Mass', 'Confession', 'A
 export const PRAYER_CATEGORY_OPTIONS: Array<{ value: PrayerCategory; label: string }> = [
   { value: 'morning', label: 'Morning Prayers' },
   { value: 'evening', label: 'Evening Prayers' },
+  { value: 'devotions', label: 'Devotions' },
+  { value: 'marian', label: 'Marian Prayers' },
   { value: 'general', label: 'General Prayers' },
   { value: 'special', label: 'Special Prayers' },
   { value: 'saint', label: 'Saints Prayers' },

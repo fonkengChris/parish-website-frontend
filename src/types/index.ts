@@ -67,7 +67,7 @@ export interface GalleryItem {
   updatedAt?: string;
 }
 
-export type PrayerCategory = 'morning' | 'evening' | 'general' | 'special' | 'saint' | 'other';
+export type PrayerCategory = 'morning' | 'evening' | 'devotions' | 'marian' | 'general' | 'special' | 'saint' | 'other';
 
 export interface Prayer {
   _id: string;
