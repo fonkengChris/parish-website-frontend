@@ -365,9 +365,11 @@ export default function Home() {
                           EVENT
                         </div>
                         <div className="flex-1 flex items-center justify-center">
-                          <span className="text-3xl font-extrabold text-gray-900">
-                            {new Date(event.startDate).getMonth()},
-                            {new Date(event.startDate).getDate()}
+                          <span className="text-2xl font-extrabold text-gray-900">
+                            {new Date(event.startDate).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                            })}
                           </span>
                         </div>
                       </div>
