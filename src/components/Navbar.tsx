@@ -75,6 +75,7 @@ export default function Navbar() {
     { path: '/prayers', label: 'Prayers' },
     { path: '/order-of-the-mass', label: 'Order of the Mass' },
     { path: '/benediction', label: 'Benediction' },
+    { path: '/confession', label: 'Confession' },
   ];
 
   const isCatholicFaithActive = catholicFaithLinks.some(link => 

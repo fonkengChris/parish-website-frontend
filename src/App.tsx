@@ -17,6 +17,7 @@ import Prayers from './pages/Prayers';
 import Sermons from './pages/Sermons';
 import OrderOfTheMass from './pages/OrderOfTheMass';
 import Benediction from './pages/Benediction';
+import Confession from './pages/Confession';
 import Contact from './pages/Contact';
 import Register from './pages/Register';
 import ViewProfile from './pages/ViewProfile';
@@ -62,6 +63,7 @@ function App() {
         <Route path="/sermons" element={<Sermons />} />
         <Route path="/order-of-the-mass" element={<OrderOfTheMass />} />
         <Route path="/benediction" element={<Benediction />} />
+        <Route path="/confession" element={<Confession />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<ViewProfile />} />
