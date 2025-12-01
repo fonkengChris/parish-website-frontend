@@ -1,13 +1,13 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { authAPI } from '../services/api';
+import { setStoredUser } from '../utils/auth';
 
 export default function Register() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
-  const [parishionerId, setParishionerId] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -59,14 +59,21 @@ export default function Register() {
       };
 
       const response = await authAPI.register(registrationData);
-      setParishionerId(response.parishioner._id);
       
       // Store user and parishioner IDs in localStorage for profile access
       localStorage.setItem('parishionerId', response.parishioner._id);
-      localStorage.setItem('userId', response.user._id);
+      localStorage.setItem('userId', response.user.id);
       localStorage.setItem('parishionerEmail', formData.email);
       
-      setSubmitted(true);
+      // Automatically log in the user
+      if (response.accessToken && response.user) {
+        setStoredUser(response.user, response.accessToken);
+        
+        // Redirect to home page
+        navigate('/');
+      } else {
+        setError('Registration successful but login failed. Please login manually.');
+      }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
@@ -74,46 +81,6 @@ export default function Register() {
     }
   };
 
-  if (submitted) {
-    return (
-      <Layout>
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-white to-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl w-full">
-            <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-2xl p-10 text-center shadow-2xl">
-              <div className="inline-flex items-center justify-center w-20 h-20 bg-green-500 rounded-full mb-6">
-                <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h2 className="text-3xl font-bold text-green-800 mb-4">Registration Successful!</h2>
-              <p className="text-green-700 mb-8 text-lg">
-                Thank you for registering with our parish. Welcome to our community!
-              </p>
-              <div className="space-y-4">
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link
-                    to={`/profile/${parishionerId}`}
-                    className="inline-block px-8 py-4 bg-primary-600 text-white rounded-xl hover:bg-primary-700 font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-                  >
-                    View Profile
-                  </Link>
-                  <Link
-                    to={`/profile/edit/${parishionerId}`}
-                    className="inline-block px-8 py-4 border-2 border-primary-600 text-primary-600 rounded-xl hover:bg-primary-50 font-semibold transition-all duration-300 transform hover:scale-105"
-                  >
-                    Complete Your Profile
-                  </Link>
-                </div>
-                <p className="text-sm text-green-700 mt-6">
-                  You can add more details about yourself, family members, sacraments, and ministries.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </Layout>
-    );
-  }
 
   return (
     <Layout>

@@ -146,8 +146,10 @@ export const authAPI = {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   },
-  register: async (registrationData: { firstName: string; lastName: string; email: string; password: string; phone?: string }): Promise<{ message: string; user: { _id: string; email: string; role: string }; parishioner: { _id: string; firstName: string; lastName: string } }> => {
-    const { data } = await api.post<{ message: string; user: { _id: string; email: string; role: string }; parishioner: { _id: string; firstName: string; lastName: string } }>('/auth/register', registrationData);
+  register: async (registrationData: { firstName: string; lastName: string; email: string; password: string; phone?: string }): Promise<{ message: string; accessToken: string; user: { id: string; email: string; role: string }; parishioner: { _id: string; firstName: string; lastName: string } }> => {
+    const { data } = await api.post<{ message: string; accessToken: string; user: { id: string; email: string; role: string }; parishioner: { _id: string; firstName: string; lastName: string } }>('/auth/register', registrationData, {
+      withCredentials: true // Include cookies for refresh token
+    });
     return data;
   },
   getProfileByEmail: async (email: string): Promise<Parishioner> => {

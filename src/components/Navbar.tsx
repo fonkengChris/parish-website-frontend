@@ -83,6 +83,12 @@ export default function Navbar() {
     (link.path === '/prayers' && location.pathname.startsWith('/prayers'))
   );
 
+  // Check if user has a role above parishioner
+  const hasAdminAccess = (user: User | null): boolean => {
+    if (!user) return false;
+    return ['admin', 'parish-priest', 'priest', 'editor'].includes(user.role);
+  };
+
   return (
     <nav className="sticky top-0 z-50 bg-gradient-to-r from-primary-700 via-primary-600 to-primary-700 text-white shadow-xl border-b border-primary-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -155,7 +161,7 @@ export default function Navbar() {
                 </>
               )}
             </div>
-            {user && (user.role === 'admin' || user.role === 'editor') && (
+            {user && hasAdminAccess(user) && (
               <Link
                 to="/admin/dashboard"
                 className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
@@ -164,7 +170,7 @@ export default function Navbar() {
                     : 'text-primary-100 hover:bg-primary-500/50 hover:text-white'
                 }`}
               >
-                Admin
+                Dashboard
               </Link>
             )}
             {user ? (
@@ -317,7 +323,7 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-            {user && (user.role === 'admin' || user.role === 'editor') && (
+            {user && hasAdminAccess(user) && (
               <Link
                 to="/admin/dashboard"
                 onClick={() => setIsOpen(false)}
@@ -327,7 +333,7 @@ export default function Navbar() {
                     : 'text-primary-100 hover:bg-primary-500/50 hover:text-white'
                 }`}
               >
-                Admin
+                Dashboard
               </Link>
             )}
             {user ? (
