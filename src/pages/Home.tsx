@@ -359,7 +359,17 @@ export default function Home() {
                   )}
                   {!event.image && (
                     <div className="relative overflow-hidden h-56 bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
-                      <div className="text-6xl text-white opacity-80">📅</div>
+                      {/* Calendar-style date badge */}
+                      <div className="flex flex-col items-center justify-center w-24 h-24 bg-white rounded-2xl shadow-xl">
+                        <div className="w-full text-center text-xs font-semibold tracking-wide text-white bg-orange-500 rounded-t-2xl py-1">
+                          EVENT
+                        </div>
+                        <div className="flex-1 flex items-center justify-center">
+                          <span className="text-3xl font-extrabold text-gray-900">
+                            {new Date(event.startDate).getDate()}
+                          </span>
+                        </div>
+                      </div>
                       <div className="absolute top-4 left-4">
                         <span className="px-3 py-1 bg-white text-orange-600 text-xs font-semibold rounded-full">
                           Event
