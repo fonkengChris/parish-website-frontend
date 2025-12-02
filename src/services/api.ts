@@ -12,7 +12,8 @@ import type {
   User,
   AuthResponse,
   SaintDay,
-  SaintsResponse
+  SaintsResponse,
+  Donation
 } from '../types';
 
 // Normalize baseURL - trim spaces and ensure proper format
@@ -563,6 +564,98 @@ export const saintsAPI = {
     const { data } = await api.get<SaintsResponse>('/saints', {
       params: { days }
     });
+    return data;
+  },
+};
+
+// Donations API
+export interface CreatePayPalOrderData {
+  amount: number;
+  currency: string;
+  purpose: Donation['purpose'];
+  donor: {
+    name: string;
+    email: string;
+    phone?: string;
+  };
+  purposeDescription?: string;
+  notes?: string;
+  isAnonymous?: boolean;
+}
+
+export interface CreateMTNRequestData {
+  amount: number;
+  phoneNumber: string;
+  purpose: Donation['purpose'];
+  donor: {
+    name: string;
+    email: string;
+    phone?: string;
+  };
+  purposeDescription?: string;
+  notes?: string;
+  isAnonymous?: boolean;
+}
+
+export interface PayPalOrderResponse {
+  donationId: string;
+  orderId: string;
+  approvalUrl: string;
+  status: string;
+}
+
+export interface MTNRequestResponse {
+  donationId: string;
+  referenceId: string;
+  phoneNumber: string;
+  status: string;
+  message: string;
+}
+
+export interface PaymentStatusResponse {
+  status: string;
+  paymentStatus?: string;
+  donation: Donation;
+}
+
+export interface PaymentMethodsStatus {
+  paypal: {
+    available: boolean;
+    configured: boolean;
+  };
+  mtnMobileMoney: {
+    available: boolean;
+    configured: boolean;
+  };
+}
+
+export const donationsAPI = {
+  getPaymentMethodsStatus: async (): Promise<PaymentMethodsStatus> => {
+    const { data } = await api.get<PaymentMethodsStatus>('/donations/payment-methods/status');
+    return data;
+  },
+  getAll: async (params?: { status?: string; paymentMethod?: string; purpose?: string; page?: number; limit?: number }): Promise<{ donations: Donation[]; pagination: any }> => {
+    const { data } = await api.get<{ donations: Donation[]; pagination: any }>('/donations', { params });
+    return data;
+  },
+  getById: async (id: string): Promise<Donation> => {
+    const { data } = await api.get<Donation>(`/donations/${id}`);
+    return data;
+  },
+  createPayPalOrder: async (orderData: CreatePayPalOrderData): Promise<PayPalOrderResponse> => {
+    const { data } = await api.post<PayPalOrderResponse>('/donations/paypal/create-order', orderData);
+    return data;
+  },
+  capturePayPalOrder: async (orderId: string, donationId: string): Promise<{ success: boolean; donation: Donation; transactionId: string }> => {
+    const { data } = await api.post<{ success: boolean; donation: Donation; transactionId: string }>('/donations/paypal/capture', { orderId, donationId });
+    return data;
+  },
+  createMTNRequest: async (requestData: CreateMTNRequestData): Promise<MTNRequestResponse> => {
+    const { data } = await api.post<MTNRequestResponse>('/donations/mtn/create-request', requestData);
+    return data;
+  },
+  checkMTNStatus: async (donationId: string): Promise<PaymentStatusResponse> => {
+    const { data } = await api.post<PaymentStatusResponse>('/donations/mtn/check-status', { donationId });
     return data;
   },
 };

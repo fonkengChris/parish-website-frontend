@@ -162,3 +162,25 @@ export interface SaintsResponse {
   upcoming: SaintDay[];
   count: number;
 }
+
+export interface Donation {
+  _id: string;
+  donor: {
+    name: string;
+    email: string;
+    phone?: string;
+  };
+  amount: number;
+  currency: string;
+  purpose: 'general' | 'building' | 'charity' | 'education' | 'maintenance' | 'events' | 'sacraments' | 'other';
+  purposeDescription?: string;
+  paymentMethod: 'paypal' | 'mtn-mobile-money';
+  status: 'pending' | 'completed' | 'failed' | 'cancelled';
+  paymentId?: string;
+  paymentDetails?: any;
+  notes?: string;
+  isAnonymous?: boolean;
+  receiptSent?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}

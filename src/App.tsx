@@ -19,6 +19,8 @@ import OrderOfTheMass from './pages/OrderOfTheMass';
 import Benediction from './pages/Benediction';
 import Confession from './pages/Confession';
 import Contact from './pages/Contact';
+import Donations from './pages/Donations';
+import DonationSuccess from './pages/DonationSuccess';
 import Register from './pages/Register';
 import ViewProfile from './pages/ViewProfile';
 import EditProfile from './pages/Profile';
@@ -37,6 +39,7 @@ import ManageSermons from './pages/admin/ManageSermons';
 import ManageMissionStations from './pages/admin/ManageMissionStations';
 import ManageLiturgicalColors from './pages/admin/ManageLiturgicalColors';
 import ManageUsers from './pages/admin/ManageUsers';
+import ManageDonations from './pages/admin/ManageDonations';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
@@ -66,6 +69,8 @@ function App() {
         <Route path="/benediction" element={<Benediction />} />
         <Route path="/confession" element={<Confession />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/donations" element={<Donations />} />
+        <Route path="/donations/success" element={<DonationSuccess />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<ViewProfile />} />
         <Route path="/profile/:id" element={<ViewProfile />} />
@@ -161,6 +166,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ManageUsers />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/donations"
+          element={
+            <ProtectedRoute>
+              <ManageDonations />
             </ProtectedRoute>
           }
         />

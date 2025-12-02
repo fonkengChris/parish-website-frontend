@@ -63,10 +63,11 @@ export default function Navbar() {
 
   const navLinks = [
     { path: '/', label: 'Home' },
-    { path: '/about-us', label: 'About Us' },
-    { path: '/mass-schedule', label: 'Mass Schedule' },
+    { path: '/about-us', label: 'About' },
+    { path: '/mass-schedule', label: 'MassTimes' },
     { path: '/announcements', label: 'Announcements' },
     { path: '/gallery', label: 'Gallery' },
+    { path: '/donations', label: 'Donations' },
     { path: '/contact', label: 'Contact' },
   ];
 
@@ -288,7 +289,7 @@ export default function Navbar() {
                     : 'text-primary-100 hover:bg-primary-500/50 hover:text-white'
                 }`}
               >
-                Catholic Faith
+                CatholicFaith
                 <svg
                   className={`w-5 h-5 transition-transform duration-200 ${showCatholicFaithMenu ? 'rotate-180' : ''}`}
                   fill="none"
