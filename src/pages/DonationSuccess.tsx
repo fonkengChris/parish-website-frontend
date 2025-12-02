@@ -17,7 +17,6 @@ export default function DonationSuccess() {
   useEffect(() => {
     // Extract parameters from URL
     const token = searchParams.get('token');
-    const PayerID = searchParams.get('PayerID');
     const storedDonationId = localStorage.getItem('pendingDonationId');
 
     // Check if we have the required parameters
