@@ -10,7 +10,9 @@ import type {
   Prayer,
   Sermon,
   User,
-  AuthResponse 
+  AuthResponse,
+  SaintDay,
+  SaintsResponse
 } from '../types';
 
 // Normalize baseURL - trim spaces and ensure proper format
@@ -541,6 +543,26 @@ export const usersAPI = {
   },
   updateRole: async (id: string, role: User['role']): Promise<UserWithDetails> => {
     const { data } = await api.put<UserWithDetails>(`/users/${id}/role`, { role });
+    return data;
+  },
+};
+
+// Saints API
+export const saintsAPI = {
+  getToday: async (): Promise<SaintDay> => {
+    const { data } = await api.get<SaintDay>('/saints/today');
+    return data;
+  },
+  getUpcoming: async (days = 9): Promise<{ feasts: SaintDay[]; count: number }> => {
+    const { data } = await api.get<{ feasts: SaintDay[]; count: number }>('/saints/upcoming', {
+      params: { days }
+    });
+    return data;
+  },
+  getAll: async (days = 9): Promise<SaintsResponse> => {
+    const { data } = await api.get<SaintsResponse>('/saints', {
+      params: { days }
+    });
     return data;
   },
 };

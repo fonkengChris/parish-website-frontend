@@ -145,3 +145,20 @@ export interface Parishioner {
   updatedAt?: string;
 }
 
+export interface Saint {
+  name: string;
+  type: 'saint' | 'feast' | 'memorial' | 'optional' | 'ordinary' | 'none';
+  description: string;
+}
+
+export interface SaintDay {
+  date: string;
+  timestamp: string;
+  saints: Saint[];
+}
+
+export interface SaintsResponse {
+  today: SaintDay;
+  upcoming: SaintDay[];
+  count: number;
+}

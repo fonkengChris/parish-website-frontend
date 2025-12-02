@@ -1,22 +1,25 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Layout from '../components/Layout';
-import { announcementsAPI, eventsAPI } from '../services/api';
+import { announcementsAPI, eventsAPI, saintsAPI } from '../services/api';
 import { PARISH_NAME, PARISH_DIOCESE } from '../components/Map';
-import type { Announcement, Event } from '../types';
+import type { Announcement, Event, SaintDay } from '../types';
 
 export default function Home() {
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [events, setEvents] = useState<Event[]>([]);
+  const [saintOfTheDay, setSaintOfTheDay] = useState<SaintDay | null>(null);
+  const [upcomingFeasts, setUpcomingFeasts] = useState<SaintDay[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch announcements and events in parallel
-        const [announcementsData, eventsData] = await Promise.all([
+        // Fetch announcements, events, and saints in parallel
+        const [announcementsData, eventsData, saintsData] = await Promise.all([
           announcementsAPI.getAll(),
-          eventsAPI.getAll()
+          eventsAPI.getAll(),
+          saintsAPI.getAll(9)
         ]);
         
         setAnnouncements(announcementsData.slice(0, 3)); // Show latest 3
@@ -34,6 +37,8 @@ export default function Home() {
         }).slice(0, 3); // Show latest 3
         
         setEvents(upcomingEvents);
+        setSaintOfTheDay(saintsData.today);
+        setUpcomingFeasts(saintsData.upcoming);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -196,6 +201,105 @@ export default function Home() {
           </div>
         </div>
       </section> */}
+
+      {/* Saint of the Day and Upcoming Feasts */}
+      <section className="py-20 bg-gradient-to-b from-white via-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Saint of the Day */}
+          {saintOfTheDay && (
+            <div className="mb-16">
+              <div className="text-center mb-10">
+                <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Saint of the Day</h2>
+                {/* <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                  Today we honor and remember the saints who inspire us in our faith journey.
+                </p> */}
+              </div>
+              <div className="bg-gradient-to-br from-primary-50 to-primary-100 border-2 border-primary-200 rounded-2xl p-8 md:p-12 shadow-lg">
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-primary-600 text-white text-4xl mb-6 shadow-xl">
+                    ✝️
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                    {saintOfTheDay.saints.map(saint => saint.name).join(' and ')}
+                  </h3>
+                  {saintOfTheDay.saints[0] && (
+                    <>
+                      {saintOfTheDay.saints[0].type !== 'none' && (
+                        <p className="text-primary-700 font-semibold mb-4 text-lg">
+                          {saintOfTheDay.saints[0].type === 'feast' ? 'Feast' : 
+                           saintOfTheDay.saints[0].type === 'memorial' ? 'Memorial' :
+                           saintOfTheDay.saints[0].type === 'optional' ? 'Optional Memorial' : 'Saint'}
+                        </p>
+                      )}
+                      {saintOfTheDay.saints[0].type !== 'none' && (
+                        <p className="text-gray-700 text-lg max-w-3xl mx-auto leading-relaxed">
+                          {saintOfTheDay.saints[0].description}
+                        </p>
+                      )}
+                      <p className="text-primary-600 font-medium mt-6 text-sm">
+                        {new Date(saintOfTheDay.date).toLocaleDateString('en-US', {
+                          weekday: 'long',
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </p>
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Upcoming Feasts */}
+          {upcomingFeasts.length > 0 && (
+            <div>
+              <div className="text-center mb-10">
+                <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900">Upcoming Feasts</h2>
+                <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                  Mark your calendar for these important celebrations in the coming days.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {upcomingFeasts.slice(0, 9).map((feastDay) => (
+                  <div
+                    key={feastDay.date}
+                    className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 p-6"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <p className="text-primary-600 font-semibold text-sm mb-2">
+                          {new Date(feastDay.date).toLocaleDateString('en-US', {
+                            weekday: 'long',
+                            month: 'long',
+                            day: 'numeric',
+                            year: 'numeric'
+                          })}
+                        </p>
+                        <h4 className="text-xl font-bold text-gray-900 mb-2">
+                          {feastDay.saints.map(saint => saint.name).join(' and ')}
+                        </h4>
+                        {feastDay.saints[0] && feastDay.saints[0].type !== 'none' && (
+                          <span className="inline-block px-3 py-1 bg-primary-100 text-primary-700 text-xs font-semibold rounded-full mb-3">
+                            {feastDay.saints[0].type === 'feast' ? 'Feast' : 
+                             feastDay.saints[0].type === 'memorial' ? 'Memorial' :
+                             feastDay.saints[0].type === 'optional' ? 'Optional' : 'Saint'}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    {feastDay.saints[0] && feastDay.saints[0].type !== 'none' && (
+                      <p className="text-gray-600 text-sm leading-relaxed">
+                        {feastDay.saints[0].description}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
 
       {/* Encouragement to Grow in Faith */}
       <section className="py-16 bg-white">
