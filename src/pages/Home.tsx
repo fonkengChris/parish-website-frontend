@@ -33,20 +33,17 @@ export default function Home() {
 
         setAnnouncements(announcementsData.slice(0, 3)); // Show latest 3
 
-        // Filter events for upcoming (today or future)
+        // Filter events for next 7 days
         const today = new Date();
         today.setHours(0, 0, 0, 0);
+        const sevenDaysLater = new Date(today);
+        sevenDaysLater.setDate(sevenDaysLater.getDate() + 7);
 
         const upcomingEvents = eventsData
           .filter((event) => {
-            if (!event.startDate) return false;
             const eventDate = new Date(event.startDate);
             eventDate.setHours(0, 0, 0, 0);
-            return eventDate >= today;
-          })
-          .sort((a, b) => {
-            // Sort by startDate ascending (earliest first)
-            return new Date(a.startDate).getTime() - new Date(b.startDate).getTime();
+            return eventDate >= today && eventDate <= sevenDaysLater;
           })
           .slice(0, 3); // Show latest 3
 
