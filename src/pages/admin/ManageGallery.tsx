@@ -76,10 +76,16 @@ export default function ManageGallery() {
     if (!formData.imageUrl.trim()) {
       errors.imageUrl = 'Image URL is required';
     } else {
-      try {
-        new URL(formData.imageUrl);
-      } catch {
-        errors.imageUrl = 'Please enter a valid URL';
+      // Allow both full URLs and relative paths starting with /
+      const isRelativePath = formData.imageUrl.startsWith('/');
+      const isFullUrl = formData.imageUrl.startsWith('http://') || formData.imageUrl.startsWith('https://');
+      
+      if (!isRelativePath && !isFullUrl) {
+        try {
+          new URL(formData.imageUrl);
+        } catch {
+          errors.imageUrl = 'Please enter a valid URL or relative path (starting with /)';
+        }
       }
     }
     
@@ -279,7 +285,7 @@ export default function ManageGallery() {
                   Image URL <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="url"
+                  type="text"
                   required
                   value={formData.imageUrl}
                   onChange={(e) => {
@@ -289,7 +295,7 @@ export default function ManageGallery() {
                   className={`w-full px-4 py-2.5 border rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors ${
                     formErrors.imageUrl ? 'border-red-500' : 'border-gray-300'
                   }`}
-                  placeholder="https://example.com/image.jpg"
+                  placeholder="https://example.com/image.jpg or /images/image.jpg"
                 />
                 {formErrors.imageUrl && (
                   <p className="mt-1 text-sm text-red-600">{formErrors.imageUrl}</p>

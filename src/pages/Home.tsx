@@ -85,7 +85,7 @@ export default function Home() {
       <section
         className="relative bg-cover bg-center bg-no-repeat text-white py-32 md:py-48"
         style={{
-          backgroundImage: "url(/images/church.jpg)",
+          backgroundImage: "url(/images/church.jpeg)",
         }}
       >
         {/* Overlay for better text readability */}
