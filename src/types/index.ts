@@ -172,7 +172,7 @@ export interface Donation {
   };
   amount: number;
   currency: string;
-  purpose: 'general' | 'building' | 'charity' | 'education' | 'maintenance' | 'events' | 'sacraments' | 'other';
+  purpose: 'general' | 'charity' | 'mass' | 'other';
   purposeDescription?: string;
   paymentMethod: 'paypal' | 'mtn-mobile-money';
   status: 'pending' | 'completed' | 'failed' | 'cancelled';

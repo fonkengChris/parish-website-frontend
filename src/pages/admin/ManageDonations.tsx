@@ -22,6 +22,7 @@ export default function ManageDonations() {
     total: 0,
     pages: 0
   });
+  const [expandedMessages, setExpandedMessages] = useState<Set<string>>(new Set());
   const hasFetchedRef = useRef(false);
 
   const fetchDonations = useCallback(async () => {
@@ -148,6 +149,20 @@ export default function ManageDonations() {
     });
   };
 
+  const toggleMessageExpansion = (donationId: string) => {
+    setExpandedMessages(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(donationId)) {
+        newSet.delete(donationId);
+      } else {
+        newSet.add(donationId);
+      }
+      return newSet;
+    });
+  };
+
+  const MAX_MESSAGE_LENGTH = 30;
+
   if (!user) return null;
 
   if (loading && donations.length === 0) {
@@ -265,12 +280,8 @@ export default function ManageDonations() {
               >
                 <option value="">All Purposes</option>
                 <option value="general">General</option>
-                <option value="building">Building</option>
                 <option value="charity">Charity</option>
-                <option value="education">Education</option>
-                <option value="maintenance">Maintenance</option>
-                <option value="events">Events</option>
-                <option value="sacraments">Sacraments</option>
+                <option value="mass">Mass Intention</option>
                 <option value="other">Other</option>
               </select>
             </div>
@@ -353,6 +364,9 @@ export default function ManageDonations() {
                       Purpose
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                      Message
+                    </th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                       Payment Method
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
@@ -360,9 +374,6 @@ export default function ManageDonations() {
                     </th>
                     <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                       Date
-                    </th>
-                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                      Transaction ID
                     </th>
                   </tr>
                 </thead>
@@ -392,10 +403,41 @@ export default function ManageDonations() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-900 capitalize">
-                          {donation.purpose}
+                          {donation.purpose === 'mass' ? 'Mass Intention' : donation.purpose}
                         </div>
                         {donation.purposeDescription && (
                           <div className="text-xs text-gray-500">{donation.purposeDescription}</div>
+                        )}
+                      </td>
+                      <td className="px-6 py-4">
+                        {donation.notes ? (
+                          <div className="text-sm text-gray-700 max-w-xs">
+                            {donation.notes.length > MAX_MESSAGE_LENGTH && !expandedMessages.has(donation._id) ? (
+                              <>
+                                <span>{donation.notes.substring(0, MAX_MESSAGE_LENGTH)}...</span>
+                                <button
+                                  onClick={() => toggleMessageExpansion(donation._id)}
+                                  className="ml-1 text-primary-600 hover:text-primary-800 font-medium text-xs underline"
+                                >
+                                  read more
+                                </button>
+                              </>
+                            ) : (
+                              <>
+                                <span>{donation.notes}</span>
+                                {donation.notes.length > MAX_MESSAGE_LENGTH && (
+                                  <button
+                                    onClick={() => toggleMessageExpansion(donation._id)}
+                                    className="ml-1 text-primary-600 hover:text-primary-800 font-medium text-xs underline"
+                                  >
+                                    read less
+                                  </button>
+                                )}
+                              </>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-xs text-gray-400 italic">No message</span>
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
@@ -407,17 +449,6 @@ export default function ManageDonations() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-600">
                           {donation.createdAt ? formatDate(donation.createdAt) : 'N/A'}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-xs text-gray-500 font-mono">
-                          {donation.paymentId ? (
-                            <span title={donation.paymentId}>
-                              {donation.paymentId.substring(0, 20)}...
-                            </span>
-                          ) : (
-                            'N/A'
-                          )}
                         </div>
                       </td>
                     </tr>

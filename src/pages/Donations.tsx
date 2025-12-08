@@ -8,7 +8,7 @@ export default function Donations() {
   const [formData, setFormData] = useState<{
     amount: string;
     currency: string;
-    purpose: 'general' | 'building' | 'charity' | 'education' | 'maintenance' | 'events' | 'sacraments' | 'other';
+    purpose: 'general' | 'charity' | 'mass' | 'other';
     purposeDescription: string;
     donor: {
       name: string;
@@ -302,12 +302,8 @@ export default function Donations() {
 
   const purposeOptions = [
     { value: 'general', label: 'General Donation' },
-    { value: 'building', label: 'Building Fund' },
     { value: 'charity', label: 'Charity' },
-    { value: 'education', label: 'Education' },
-    { value: 'maintenance', label: 'Maintenance' },
-    { value: 'events', label: 'Events' },
-    { value: 'sacraments', label: 'Sacraments' },
+    { value: 'mass', label: 'Mass Intention' },
     { value: 'other', label: 'Other' }
   ];
 
