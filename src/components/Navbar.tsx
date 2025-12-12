@@ -65,7 +65,7 @@ export default function Navbar() {
     { path: '/', label: 'Home' },
     { path: '/about-us', label: 'About' },
     { path: '/mass-schedule', label: 'MassTimes' },
-    { path: '/announcements', label: 'Announcements' },
+    { path: '/announcements', label: 'News' },
     { path: '/gallery', label: 'Gallery' },
     { path: '/donations', label: 'Donations' },
     { path: '/contact', label: 'Contact' },
@@ -93,14 +93,19 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 bg-gradient-to-r from-primary-700 via-primary-600 to-primary-700 text-white shadow-xl border-b border-primary-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <Link to="/" className="text-xl md:text-2xl font-bold hover:text-primary-100 transition-colors duration-200 flex items-center gap-2">
-            <span className="text-2xl">⛪</span>
-            {PARISH_NAME}
+        <div className="flex justify-between items-center h-16 gap-4">
+          <Link 
+            to="/" 
+            className="text-xl md:text-2xl font-bold hover:text-primary-100 transition-colors duration-200 navbar-logo-container flex-shrink-0 min-w-0"
+          >
+            <span className="navbar-logo-icon" aria-hidden="true">
+              ⛪
+            </span>
+            <span className="navbar-logo-text whitespace-nowrap">{PARISH_NAME}</span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
+          {/* Desktop Navigation - Only show on large screens (lg and above) */}
+          <div className="hidden lg:flex items-center space-x-1 flex-shrink">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -238,9 +243,9 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile/Tablet menu button - Show on screens smaller than lg (1024px) */}
           <button
-            className="md:hidden p-2 rounded-lg text-primary-100 hover:bg-primary-500/50 transition-all duration-200"
+            className="lg:hidden p-2 rounded-lg text-primary-100 hover:bg-primary-500/50 transition-all duration-200 flex-shrink-0"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
           >
@@ -262,9 +267,9 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile/Tablet Navigation - Show on screens smaller than lg (1024px) */}
         {isOpen && (
-          <div className="md:hidden py-4 space-y-2 bg-primary-800/50 rounded-lg mt-2 mb-2">
+          <div className="lg:hidden py-4 space-y-2 bg-primary-800/50 rounded-lg mt-2 mb-2">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -291,7 +296,7 @@ export default function Navbar() {
               >
                 CatholicFaith
                 <svg
-                  className={`w-5 h-5 transition-transform duration-200 ${showCatholicFaithMenu ? 'rotate-180' : ''}`}
+                  className={`w-5 h-5 ml-2 transition-transform duration-200 ${showCatholicFaithMenu ? 'rotate-180' : ''}`}
                   fill="none"
                   strokeLinecap="round"
                   strokeLinejoin="round"

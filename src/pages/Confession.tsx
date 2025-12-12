@@ -77,7 +77,7 @@ export default function Confession() {
                   >
                     <span className="text-lg font-semibold text-gray-900">{prayer.title}</span>
                     <svg
-                      className={`w-5 h-5 text-primary-600 transition-transform ${expandedPrayers.has(prayer.title) ? 'rotate-180' : ''}`}
+                      className={`w-5 h-5 ml-3 text-primary-600 transition-transform ${expandedPrayers.has(prayer.title) ? 'rotate-180' : ''}`}
                       fill="none"
                       strokeLinecap="round"
                       strokeLinejoin="round"

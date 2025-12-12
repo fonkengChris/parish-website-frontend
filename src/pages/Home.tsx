@@ -144,13 +144,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/mass-schedule"
-              className="bg-white text-primary-700 px-8 py-4 rounded-xl font-semibold hover:bg-primary-50 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 transform"
+              className="bg-white text-primary-800 px-8 py-4 rounded-xl font-bold hover:bg-primary-50 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 transform border-2 border-primary-200"
             >
               View Mass Schedule
             </Link>
             <Link
               to="/contact"
-              className="bg-primary-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-700 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 transform"
+              className="bg-primary-600 text-white px-8 py-4 rounded-xl font-bold hover:bg-primary-700 transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 transform"
             >
               Contact Us
             </Link>
@@ -229,7 +229,7 @@ export default function Home() {
                 <div className="flex gap-4 mb-6">
                   <Link
                     to="/announcements"
-                    className="text-primary-600 hover:text-primary-700 font-semibold inline-flex items-center gap-2 group px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors text-sm"
+                    className="text-primary-700 hover:text-primary-900 font-bold inline-flex items-center gap-2 group px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors text-base"
                   >
                     All Announcements
                     <span className="group-hover:translate-x-1 transition-transform">
@@ -238,7 +238,7 @@ export default function Home() {
                   </Link>
                   <Link
                     to="/events"
-                    className="text-primary-600 hover:text-primary-700 font-semibold inline-flex items-center gap-2 group px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors text-sm"
+                    className="text-primary-700 hover:text-primary-900 font-bold inline-flex items-center gap-2 group px-4 py-2 rounded-lg hover:bg-primary-50 transition-colors text-base"
                   >
                     All Events
                     <span className="group-hover:translate-x-1 transition-transform">
@@ -291,21 +291,21 @@ export default function Home() {
                         <div className="relative overflow-hidden h-48 bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
                           <div className="text-5xl text-white opacity-80">📢</div>
                           <div className="absolute top-3 left-3">
-                            <span className="px-2 py-1 bg-white text-primary-600 text-xs font-semibold rounded-full">
+                            <span className="px-2 py-1 bg-white text-primary-800 text-xs font-bold rounded-full border border-primary-200">
                               Announcement
                             </span>
                           </div>
                         </div>
                       )}
                       <div className="p-5">
-                        <h3 className="text-lg font-bold mb-2 text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                        <h3 className="text-lg font-bold mb-2 text-gray-900 group-hover:text-primary-800 transition-colors line-clamp-2">
                           {announcement.title}
                         </h3>
                         <p className="text-gray-600 text-sm mb-3 line-clamp-2 leading-relaxed">
                           {announcement.content}
                         </p>
                         <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                          <p className="text-primary-600 text-xs font-semibold">
+                          <p className="text-primary-800 text-sm font-bold">
                             {new Date(announcement.date).toLocaleDateString(
                               "en-US",
                               {
@@ -315,7 +315,7 @@ export default function Home() {
                               }
                             )}
                           </p>
-                          <span className="text-primary-600 text-xs font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                          <span className="text-primary-800 text-sm font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                             Read More <span>→</span>
                           </span>
                         </div>
@@ -371,7 +371,7 @@ export default function Home() {
                         </div>
                       )}
                       <div className="p-5">
-                        <h3 className="text-lg font-bold mb-2 text-gray-900 group-hover:text-primary-600 transition-colors line-clamp-2">
+                        <h3 className="text-lg font-bold mb-2 text-gray-900 group-hover:text-primary-800 transition-colors line-clamp-2">
                           {event.title}
                         </h3>
                         <p className="text-gray-600 text-sm mb-3 line-clamp-2 leading-relaxed">
@@ -406,7 +406,7 @@ export default function Home() {
                             </div>
                           )}
                           <div className="flex items-center justify-end pt-1">
-                            <span className="text-primary-600 text-xs font-semibold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                            <span className="text-primary-800 text-sm font-bold group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
                               View Details <span>→</span>
                             </span>
                           </div>
@@ -439,7 +439,7 @@ export default function Home() {
                       {saintOfTheDay.saints[0] && (
                         <>
                           {saintOfTheDay.saints[0].type !== "none" && (
-                            <p className="text-primary-700 font-semibold mb-3 text-base">
+                            <p className="text-primary-800 font-bold mb-3 text-lg">
                               {saintOfTheDay.saints[0].type === "feast"
                                 ? "Feast"
                                 : saintOfTheDay.saints[0].type === "memorial"
@@ -450,11 +450,11 @@ export default function Home() {
                             </p>
                           )}
                           {saintOfTheDay.saints[0].type !== "none" && (
-                            <p className="text-gray-700 text-base leading-relaxed mb-3">
+                            <p className="text-gray-800 text-base leading-relaxed mb-3 font-medium">
                               {saintOfTheDay.saints[0].description}
                             </p>
                           )}
-                          <p className="text-primary-600 font-medium mt-4 text-sm">
+                          <p className="text-primary-800 font-semibold mt-4 text-base">
                             {new Date(saintOfTheDay.date).toLocaleDateString(
                               "en-US",
                               {
@@ -480,7 +480,7 @@ export default function Home() {
                     <h2 className="text-xl md:text-2xl font-bold text-white">
                       Upcoming Feasts
                     </h2>
-                    <p className="text-primary-100 text-xs mt-1">
+                    <p className="text-white text-sm mt-1 font-medium opacity-95">
                       Mark your calendar for these important celebrations
                     </p>
                   </div>
@@ -499,7 +499,7 @@ export default function Home() {
                           <div className="flex items-center justify-between gap-3">
                             {/* Left side: Date and Feast Name */}
                             <div className="flex-1 min-w-0">
-                              <p className="text-primary-600 font-semibold text-xs mb-1">
+                              <p className="text-primary-800 font-bold text-sm mb-1">
                                 {new Date(feastDay.date).toLocaleDateString(
                                   "en-US",
                                   {
@@ -517,7 +517,7 @@ export default function Home() {
                               </h4>
                               {feastDay.saints[0] &&
                                 feastDay.saints[0].type !== "none" && (
-                                  <span className="inline-block mt-1 px-2 py-0.5 bg-primary-100 text-primary-700 text-xs font-semibold rounded-full">
+                                  <span className="inline-block mt-1 px-2 py-0.5 bg-primary-100 text-primary-900 text-sm font-bold rounded-full border border-primary-300">
                                     {feastDay.saints[0].type === "feast"
                                       ? "Feast"
                                       : feastDay.saints[0].type === "memorial"

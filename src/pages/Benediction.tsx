@@ -64,7 +64,7 @@ export default function Benediction() {
                   <span className="text-primary-600 mr-3">2.</span>
                   <span className="flex-1">O Salutaris Hostia (hymn)</span>
                   <svg
-                    className={`w-5 h-5 transition-transform ${expandedHymns.has('O Salutaris Hostia') ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 ml-3 transition-transform ${expandedHymns.has('O Salutaris Hostia') ? 'rotate-180' : ''}`}
                     fill="none"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -100,7 +100,7 @@ export default function Benediction() {
                   <span className="text-primary-600 mr-3">4.</span>
                   <span className="flex-1">Tantum Ergo (hymn)</span>
                   <svg
-                    className={`w-5 h-5 transition-transform ${expandedHymns.has('Tantum Ergo') ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 ml-3 transition-transform ${expandedHymns.has('Tantum Ergo') ? 'rotate-180' : ''}`}
                     fill="none"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -132,7 +132,7 @@ export default function Benediction() {
                   <span className="text-primary-600 mr-3">5.</span>
                   <span className="flex-1">Prayer</span>
                   <svg
-                    className={`w-5 h-5 transition-transform ${expandedPrayers.has('Prayer') ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Prayer') ? 'rotate-180' : ''}`}
                     fill="none"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -168,7 +168,7 @@ export default function Benediction() {
                   <span className="text-primary-600 mr-3">7.</span>
                   <span className="flex-1">Divine Praises</span>
                   <svg
-                    className={`w-5 h-5 transition-transform ${expandedPrayers.has('Divine Praises') ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Divine Praises') ? 'rotate-180' : ''}`}
                     fill="none"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -207,7 +207,7 @@ export default function Benediction() {
             >
               <span className="text-gray-700 text-lg">Click to view full prayer</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Prayer of St. Thomas Aquinas') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Prayer of St. Thomas Aquinas') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"

@@ -56,7 +56,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">1.</span>
               <span className="flex-1">Sign of the Cross & Greeting</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedDialogues.has('Greeting') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedDialogues.has('Greeting') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -94,7 +94,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">2.</span>
               <span className="flex-1">Penitential Act</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedDialogues.has('Penitential Act') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedDialogues.has('Penitential Act') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -132,7 +132,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">3.</span>
               <span className="flex-1">Kyrie Eleison (Lord, have mercy)</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Kyrie') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Kyrie') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -164,7 +164,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">4.</span>
               <span className="flex-1">The Gloria (on Sundays and solemnities)</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Gloria') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Gloria') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -221,7 +221,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">4.</span>
               <span className="flex-1">Gospel</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedDialogues.has('Gospel Acclamation') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedDialogues.has('Gospel Acclamation') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -263,7 +263,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">6.</span>
               <span className="flex-1">The Creed (On Sundays and Solemnities)</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Creed') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Creed') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -316,7 +316,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">3.</span>
               <span className="flex-1">The Eucharistic Prayer (Preface Dialogue)</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedDialogues.has('Preface Dialogue') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedDialogues.has('Preface Dialogue') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -354,7 +354,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">4.</span>
               <span className="flex-1">Sanctus (Holy, Holy, Holy)</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Sanctus') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Sanctus') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -386,7 +386,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">5.</span>
               <span className="flex-1">Memorial Acclamation</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedDialogues.has('Memorial Acclamation') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedDialogues.has('Memorial Acclamation') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -424,7 +424,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">6.</span>
               <span className="flex-1">The Lord's Prayer</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Our Father') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Our Father') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -456,7 +456,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">7.</span>
               <span className="flex-1">Sign of Peace</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedDialogues.has('Sign of Peace') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedDialogues.has('Sign of Peace') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -494,7 +494,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">8.</span>
               <span className="flex-1">Breaking of the Bread (Agnus Dei - Lamb of God)</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Agnus Dei') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Agnus Dei') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -547,7 +547,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">1.</span>
               <span className="flex-1">Blessing</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Final Blessing') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Final Blessing') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -579,7 +579,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">2.</span>
               <span className="flex-1">Dismissal</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedDialogues.has('Dismissal') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedDialogues.has('Dismissal') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -627,7 +627,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">1.</span>
               <span className="flex-1">Sign of the Cross</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedDialogues.has('Greeting') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedDialogues.has('Greeting') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -667,7 +667,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">3.</span>
               <span className="flex-1">Confiteor</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedDialogues.has('Confiteor') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedDialogues.has('Confiteor') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -709,7 +709,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">5.</span>
               <span className="flex-1">Kyrie Eleison</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Kyrie') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Kyrie') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -741,7 +741,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">6.</span>
               <span className="flex-1">Gloria in Excelsis Deo</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Gloria') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Gloria') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -785,7 +785,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">10.</span>
               <span className="flex-1">Gospel</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedDialogues.has('Gospel') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedDialogues.has('Gospel') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -827,7 +827,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">12.</span>
               <span className="flex-1">Credo (Creed)</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Credo') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Credo') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -877,7 +877,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">4.</span>
               <span className="flex-1">Preface</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedDialogues.has('Preface') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedDialogues.has('Preface') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -915,7 +915,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">5.</span>
               <span className="flex-1">Sanctus</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Sanctus') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Sanctus') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -951,7 +951,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">7.</span>
               <span className="flex-1">Pater Noster (Our Father)</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Pater Noster') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Pater Noster') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -983,7 +983,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">8.</span>
               <span className="flex-1">Agnus Dei</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Agnus Dei') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Agnus Dei') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -1015,7 +1015,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">9.</span>
               <span className="flex-1">Pax Domini</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedDialogues.has('Pax Domini') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedDialogues.has('Pax Domini') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -1061,7 +1061,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">12.</span>
               <span className="flex-1">Ite, Missa Est</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedDialogues.has('Ite Missa Est') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedDialogues.has('Ite Missa Est') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -1099,7 +1099,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">13.</span>
               <span className="flex-1">Blessing</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Blessing') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Blessing') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -1131,7 +1131,7 @@ export default function OrderOfTheMass() {
               <span className="text-primary-600 mr-3">14.</span>
               <span className="flex-1">Last Gospel (Prologue of John)</span>
               <svg
-                className={`w-5 h-5 transition-transform ${expandedPrayers.has('Last Gospel') ? 'rotate-180' : ''}`}
+                className={`w-5 h-5 ml-3 transition-transform ${expandedPrayers.has('Last Gospel') ? 'rotate-180' : ''}`}
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"

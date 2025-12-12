@@ -21,6 +21,7 @@ import Confession from './pages/Confession';
 import Contact from './pages/Contact';
 import Donations from './pages/Donations';
 import DonationSuccess from './pages/DonationSuccess';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 import Register from './pages/Register';
 import ViewProfile from './pages/ViewProfile';
 import EditProfile from './pages/Profile';
@@ -69,6 +70,7 @@ function App() {
         <Route path="/benediction" element={<Benediction />} />
         <Route path="/confession" element={<Confession />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/donations" element={<Donations />} />
         <Route path="/donations/success" element={<DonationSuccess />} />
         <Route path="/register" element={<Register />} />

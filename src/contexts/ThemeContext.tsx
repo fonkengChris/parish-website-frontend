@@ -19,6 +19,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const updateCSSVariables = useCallback((colorData: LiturgicalColorResponse) => {
     const root = document.documentElement;
     const tailwind = colorData.tailwind;
+    const colorName = colorData.color.toLowerCase();
     
     // Update CSS variables for primary colors on :root
     // These will cascade to all elements using the primary color classes
@@ -33,6 +34,49 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     root.style.setProperty('--color-primary-700', tailwind[700]);
     root.style.setProperty('--color-primary-800', tailwind[800]);
     root.style.setProperty('--color-primary-900', tailwind[900]);
+    
+    // Update text contrast colors based on theme
+    root.style.setProperty('--text-on-light', tailwind[900]);
+    root.style.setProperty('--text-on-medium', tailwind[800]);
+    root.style.setProperty('--text-on-dark', '#ffffff');
+    
+    // Adjust typography based on color theme for optimal readability
+    // Darker themes (purple, red) benefit from slightly heavier weights
+    // Lighter themes (white, gold) benefit from clearer sizing
+    if (colorName === 'purple' || colorName === 'red' || colorName === 'rose') {
+      // Darker themes: use slightly bolder weights for better contrast
+      root.style.setProperty('--font-weight-normal', '450');
+      root.style.setProperty('--font-weight-medium', '550');
+      root.style.setProperty('--font-weight-semibold', '650');
+      root.style.setProperty('--font-weight-bold', '750');
+      // Slightly larger base font size for readability
+      root.style.setProperty('--font-size-base', '1.0625rem'); // 17px
+      root.style.setProperty('--font-size-sm', '0.9375rem');  // 15px
+    } else if (colorName === 'white') {
+      // White theme: standard weights with good sizing
+      root.style.setProperty('--font-weight-normal', '400');
+      root.style.setProperty('--font-weight-medium', '500');
+      root.style.setProperty('--font-weight-semibold', '600');
+      root.style.setProperty('--font-weight-bold', '700');
+      root.style.setProperty('--font-size-base', '1rem');      // 16px
+      root.style.setProperty('--font-size-sm', '0.875rem');   // 14px
+    } else if (colorName === 'gold') {
+      // Gold theme: slightly heavier weights for warmth
+      root.style.setProperty('--font-weight-normal', '425');
+      root.style.setProperty('--font-weight-medium', '525');
+      root.style.setProperty('--font-weight-semibold', '625');
+      root.style.setProperty('--font-weight-bold', '725');
+      root.style.setProperty('--font-size-base', '1.0625rem'); // 17px
+      root.style.setProperty('--font-size-sm', '0.9375rem');   // 15px
+    } else {
+      // Green theme (default): balanced approach
+      root.style.setProperty('--font-weight-normal', '400');
+      root.style.setProperty('--font-weight-medium', '500');
+      root.style.setProperty('--font-weight-semibold', '600');
+      root.style.setProperty('--font-weight-bold', '700');
+      root.style.setProperty('--font-size-base', '1rem');      // 16px
+      root.style.setProperty('--font-size-sm', '0.875rem');     // 14px
+    }
     
     console.log('[Theme] Updated liturgical color to:', colorData.color, 'for date:', colorData.date);
   }, []);

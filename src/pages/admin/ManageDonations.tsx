@@ -417,7 +417,7 @@ export default function ManageDonations() {
                                 <span>{donation.notes.substring(0, MAX_MESSAGE_LENGTH)}...</span>
                                 <button
                                   onClick={() => toggleMessageExpansion(donation._id)}
-                                  className="ml-1 text-primary-600 hover:text-primary-800 font-medium text-xs underline"
+                                  className="ml-1 text-primary-700 hover:text-primary-900 font-semibold text-sm underline underline-offset-2"
                                 >
                                   read more
                                 </button>
@@ -428,7 +428,7 @@ export default function ManageDonations() {
                                 {donation.notes.length > MAX_MESSAGE_LENGTH && (
                                   <button
                                     onClick={() => toggleMessageExpansion(donation._id)}
-                                    className="ml-1 text-primary-600 hover:text-primary-800 font-medium text-xs underline"
+                                    className="ml-1 text-primary-700 hover:text-primary-900 font-semibold text-sm underline underline-offset-2"
                                   >
                                     read less
                                   </button>
