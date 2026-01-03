@@ -40,31 +40,43 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  // Transform response to handle non-JSON responses gracefully
+  // Prevent axios from automatically parsing JSON - we'll handle it manually
+  // This allows us to catch HTML responses before they cause parse errors
   transformResponse: [
-    (data) => {
-      // If data is already parsed (object), return it
-      if (typeof data === 'object') {
+    (data, headers) => {
+      // If data is already parsed (object), return it (shouldn't happen with responseType: 'text')
+      if (typeof data === 'object' && data !== null) {
         return data;
       }
-      // If data is a string, try to parse as JSON
+      
+      // If data is a string, check if it's HTML first (most common error case)
       if (typeof data === 'string') {
-        // Check if it looks like JSON
         const trimmed = data.trim();
+        
+        // If it starts with HTML tags, return as-is (interceptor will handle it)
+        if (trimmed.startsWith('<!') || trimmed.startsWith('<html') || trimmed.toLowerCase().includes('<!doctype')) {
+          return data; // Return HTML as string - don't try to parse
+        }
+        
+        // Only try to parse if it looks like JSON
         if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
           try {
             return JSON.parse(data);
           } catch (e) {
-            // If parsing fails, return the raw data
+            // If parsing fails, return the raw data (interceptor will handle it)
             return data;
           }
         }
+        
         // If it doesn't look like JSON, return as-is
         return data;
       }
+      
       return data;
     }
   ],
+  // Override default response type to handle both JSON and text
+  responseType: 'text', // Get raw response, then parse manually
 });
 
 // Add token to requests if available
@@ -92,16 +104,64 @@ const processQueue = (error: any, token: string | null = null) => {
 };
 
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Parse the response data if it's a string (with responseType: 'text', all responses are strings)
+    if (typeof response.data === 'string') {
+      const contentType = response.headers['content-type'] || '';
+      const data = response.data.trim();
+      
+      // If it's HTML, convert to error immediately
+      if (data.startsWith('<!') || data.startsWith('<html') || data.toLowerCase().includes('<!doctype')) {
+        const error: any = new Error('API endpoint returned HTML instead of JSON. The endpoint may not exist or the request failed.');
+        error.response = {
+          status: response.status || 404,
+          statusText: response.statusText || 'Not Found',
+          data: { 
+            message: 'API endpoint not found or returned an error page. Please check the API URL configuration.',
+            status: response.status || 404,
+            statusText: response.statusText || 'Not Found'
+          },
+          headers: response.headers
+        };
+        error.config = response.config;
+        return Promise.reject(error);
+      }
+      
+      // Try to parse as JSON if it looks like JSON or content-type says JSON
+      if (contentType.includes('application/json') || data.startsWith('{') || data.startsWith('[')) {
+        try {
+          response.data = JSON.parse(response.data);
+        } catch (e) {
+          // If parsing fails, create an error
+          const error: any = new Error('Failed to parse JSON response from server');
+          error.response = {
+            status: response.status,
+            statusText: response.statusText,
+            data: { 
+              message: 'Server returned invalid JSON. This may indicate a server error.',
+              status: response.status,
+              statusText: response.statusText
+            },
+            headers: response.headers
+          };
+          error.config = response.config;
+          return Promise.reject(error);
+        }
+      }
+      // If it's not JSON and not HTML, leave it as string (might be plain text)
+    }
+    
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
     const isLoginPage = window.location.pathname === '/login';
     
     // Handle JSON parse errors (SyntaxError from trying to parse non-JSON as JSON)
-    if (error.name === 'SyntaxError' || error.message?.includes('JSON.parse')) {
-      const status = error.response?.status || 500;
-      const statusText = error.response?.statusText || 'Parse Error';
-      const errorMessage = `Server returned non-JSON response (${status} ${statusText}). This usually means the endpoint doesn't exist or returned an error page.`;
+    if (error.name === 'SyntaxError' || error.message?.includes('JSON.parse') || error.message?.includes('Unexpected token')) {
+      const status = error.response?.status || 404;
+      const statusText = error.response?.statusText || 'Not Found';
+      const errorMessage = 'API endpoint returned HTML instead of JSON. The endpoint may not exist or the request failed.';
       
       // Create a proper error object
       const parseError: any = new Error(errorMessage);
@@ -126,37 +186,36 @@ api.interceptors.response.use(
     // Handle non-JSON responses (e.g., HTML error pages)
     if (error.response) {
       const contentType = error.response.headers['content-type'] || '';
-      const responseData = error.response.data;
+      let responseData = error.response.data;
       
-      // Check if response is not JSON (could be HTML, plain text, etc.)
-      if (contentType && !contentType.includes('application/json')) {
-        const status = error.response.status;
-        const statusText = error.response.statusText || 'Unknown Error';
-        
-        // If data is a string (HTML/text), create a JSON-like error object
-        if (typeof responseData === 'string') {
-          const errorMessage = status === 405 
+      // If data is a string and looks like HTML
+      if (typeof responseData === 'string') {
+        const trimmed = responseData.trim();
+        if (trimmed.startsWith('<!') || trimmed.startsWith('<html')) {
+          const status = error.response.status || 404;
+          const statusText = error.response.statusText || 'Not Found';
+          const errorMessage = status === 404 
+            ? 'API endpoint not found'
+            : status === 405
             ? `Method ${originalRequest?.method?.toUpperCase() || 'POST'} not allowed for this endpoint`
-            : `Server returned ${status} ${statusText}. Expected JSON but received ${contentType}`;
+            : `Server returned ${status} ${statusText}. The API endpoint may not exist.`;
           
           // Replace the error response data with a proper JSON object
           error.response.data = { 
             message: errorMessage, 
             status, 
-            statusText,
-            originalContentType: contentType
+            statusText
+          };
+        } else if (!contentType.includes('application/json')) {
+          // Not HTML but also not JSON
+          const status = error.response.status || 500;
+          const statusText = error.response.statusText || 'Unknown Error';
+          error.response.data = {
+            message: `Server returned ${status} ${statusText}. Expected JSON but received ${contentType}`,
+            status,
+            statusText
           };
         }
-      } else if (typeof responseData === 'string') {
-        // Content-type says JSON but data is a string (parse error)
-        // Try to extract a meaningful error message
-        const status = error.response.status;
-        const statusText = error.response.statusText || 'Unknown Error';
-        error.response.data = {
-          message: `Invalid JSON response: ${responseData.substring(0, 100)}...`,
-          status,
-          statusText
-        };
       }
     }
     
