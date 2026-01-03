@@ -49,9 +49,30 @@ export default function ManageLiturgicalColors() {
       setLoading(true);
       const data = await liturgicalColorOverridesAPI.getAll();
       setOverrides(data.overrides || []);
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error fetching overrides:', err);
-      setError(err instanceof Error ? err.message : 'Failed to load overrides');
+      
+      // Handle different error types
+      let errorMessage = 'Failed to load overrides';
+      
+      if (err instanceof Error) {
+        errorMessage = err.message;
+      } else if (err?.response?.data?.message) {
+        errorMessage = err.response.data.message;
+      } else if (err?.response?.status) {
+        const status = err.response.status;
+        const statusText = err.response.statusText || 'Unknown Error';
+        errorMessage = `${status} ${statusText}`;
+      } else if (typeof err === 'string') {
+        errorMessage = err;
+      }
+      
+      // Check for JSON parse errors specifically
+      if (err?.message?.includes('JSON.parse') || err?.name === 'SyntaxError') {
+        errorMessage = 'Server returned an invalid response. Please check if the API endpoint is correct.';
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

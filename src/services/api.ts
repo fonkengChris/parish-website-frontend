@@ -40,6 +40,31 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  // Transform response to handle non-JSON responses gracefully
+  transformResponse: [
+    (data) => {
+      // If data is already parsed (object), return it
+      if (typeof data === 'object') {
+        return data;
+      }
+      // If data is a string, try to parse as JSON
+      if (typeof data === 'string') {
+        // Check if it looks like JSON
+        const trimmed = data.trim();
+        if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+          try {
+            return JSON.parse(data);
+          } catch (e) {
+            // If parsing fails, return the raw data
+            return data;
+          }
+        }
+        // If it doesn't look like JSON, return as-is
+        return data;
+      }
+      return data;
+    }
+  ],
 });
 
 // Add token to requests if available
@@ -71,6 +96,69 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     const isLoginPage = window.location.pathname === '/login';
+    
+    // Handle JSON parse errors (SyntaxError from trying to parse non-JSON as JSON)
+    if (error.name === 'SyntaxError' || error.message?.includes('JSON.parse')) {
+      const status = error.response?.status || 500;
+      const statusText = error.response?.statusText || 'Parse Error';
+      const errorMessage = `Server returned non-JSON response (${status} ${statusText}). This usually means the endpoint doesn't exist or returned an error page.`;
+      
+      // Create a proper error object
+      const parseError: any = new Error(errorMessage);
+      parseError.response = {
+        status,
+        statusText,
+        data: { message: errorMessage, status, statusText },
+        headers: error.response?.headers || {}
+      };
+      parseError.config = error.config || originalRequest;
+      parseError.status = status;
+      
+      // If it's a 401, continue with token refresh logic
+      if (status === 401 && !originalRequest?._retry && !isLoginPage) {
+        // Will be handled below
+        error = parseError;
+      } else {
+        return Promise.reject(parseError);
+      }
+    }
+    
+    // Handle non-JSON responses (e.g., HTML error pages)
+    if (error.response) {
+      const contentType = error.response.headers['content-type'] || '';
+      const responseData = error.response.data;
+      
+      // Check if response is not JSON (could be HTML, plain text, etc.)
+      if (contentType && !contentType.includes('application/json')) {
+        const status = error.response.status;
+        const statusText = error.response.statusText || 'Unknown Error';
+        
+        // If data is a string (HTML/text), create a JSON-like error object
+        if (typeof responseData === 'string') {
+          const errorMessage = status === 405 
+            ? `Method ${originalRequest?.method?.toUpperCase() || 'POST'} not allowed for this endpoint`
+            : `Server returned ${status} ${statusText}. Expected JSON but received ${contentType}`;
+          
+          // Replace the error response data with a proper JSON object
+          error.response.data = { 
+            message: errorMessage, 
+            status, 
+            statusText,
+            originalContentType: contentType
+          };
+        }
+      } else if (typeof responseData === 'string') {
+        // Content-type says JSON but data is a string (parse error)
+        // Try to extract a meaningful error message
+        const status = error.response.status;
+        const statusText = error.response.statusText || 'Unknown Error';
+        error.response.data = {
+          message: `Invalid JSON response: ${responseData.substring(0, 100)}...`,
+          status,
+          statusText
+        };
+      }
+    }
     
     // If 401 and not already retrying and not on login page
     if (error.response?.status === 401 && !originalRequest._retry && !isLoginPage) {
