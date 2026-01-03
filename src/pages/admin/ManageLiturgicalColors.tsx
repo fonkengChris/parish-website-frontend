@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { liturgicalColorAPI } from '../../services/api';
+import { liturgicalColorAPI, liturgicalColorOverridesAPI } from '../../services/api';
 import { getStoredUser } from '../../utils/auth';
 import { useTheme } from '../../contexts/ThemeContext';
-import type { LiturgicalColorResponse } from '../../services/api';
+import type { LiturgicalColorResponse, ColorOverride } from '../../services/api';
 
 interface ColorOverride {
   _id?: string;
@@ -47,14 +47,7 @@ export default function ManageLiturgicalColors() {
   const fetchOverrides = useCallback(async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const response = await fetch('/api/liturgical-color-overrides', {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) throw new Error('Failed to fetch overrides');
-      const data = await response.json();
+      const data = await liturgicalColorOverridesAPI.getAll();
       setOverrides(data.overrides || []);
     } catch (err) {
       console.error('Error fetching overrides:', err);
@@ -104,29 +97,17 @@ export default function ManageLiturgicalColors() {
     setError(null);
 
     try {
-      const token = localStorage.getItem('token');
-      const url = editingOverride
-        ? `/api/liturgical-color-overrides/${formData.date}`
-        : '/api/liturgical-color-overrides';
-      
-      const method = editingOverride ? 'PUT' : 'POST';
-      
-      const response = await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({
+      if (editingOverride) {
+        await liturgicalColorOverridesAPI.update(formData.date, {
+          color: formData.color,
+          reason: formData.reason,
+        });
+      } else {
+        await liturgicalColorOverridesAPI.create({
           date: formData.date,
           color: formData.color,
           reason: formData.reason,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to save override');
+        });
       }
 
       await fetchOverrides();
@@ -135,7 +116,9 @@ export default function ManageLiturgicalColors() {
       await refreshColor();
       resetForm();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save override');
+      console.error('Error saving override:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save override';
+      setError(errorMessage);
     }
   };
 
