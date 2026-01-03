@@ -75,8 +75,31 @@
 
 ## Troubleshooting
 
-- If API calls fail, check that `VITE_API_URL` is correctly set in Vercel
-- Check browser console for CORS errors
-- Verify your backend is running and accessible
-- Check Vercel build logs for any build errors
+### API Calls Returning HTML Instead of JSON
+
+**Symptoms:**
+- Console errors like "Unexpected token '<', "<!doctype "... is not valid JSON"
+- API calls fail with "API endpoint returned HTML instead of JSON"
+
+**Cause:**
+The `VITE_API_URL` environment variable is not set in Vercel, causing the frontend to make API calls to the Vercel domain itself (e.g., `https://your-app.vercel.app/api/...`) instead of your backend.
+
+**Solution:**
+1. Go to your Vercel project dashboard
+2. Navigate to **Settings** → **Environment Variables**
+3. Add a new environment variable:
+   - **Name:** `VITE_API_URL`
+   - **Value:** `https://your-backend-app.herokuapp.com/api` (replace with your actual backend URL)
+   - **Environment:** Select **Production**, **Preview**, and **Development**
+4. **Redeploy** your application (Vercel will automatically redeploy when you save the environment variable, or you can trigger a manual redeploy)
+
+**To verify:**
+- After redeploying, check the browser console - you should no longer see the HTML parse errors
+- API calls should now go to your backend URL instead of the Vercel domain
+
+### Other Common Issues
+
+- **CORS errors:** Make sure your backend has CORS configured to allow requests from your Vercel domain
+- **Backend not accessible:** Verify your backend is running and accessible at the URL specified in `VITE_API_URL`
+- **Build errors:** Check Vercel build logs for any build errors
 

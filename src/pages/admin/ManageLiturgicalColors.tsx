@@ -5,18 +5,6 @@ import { getStoredUser } from '../../utils/auth';
 import { useTheme } from '../../contexts/ThemeContext';
 import type { LiturgicalColorResponse, ColorOverride } from '../../services/api';
 
-interface ColorOverride {
-  _id?: string;
-  date: string;
-  color: 'white' | 'red' | 'green' | 'purple' | 'rose' | 'gold';
-  reason?: string;
-  createdBy?: {
-    username?: string;
-    email?: string;
-  };
-  createdAt?: string;
-}
-
 const COLOR_OPTIONS = [
   { value: 'white', label: 'White', hex: '#ffffff', description: 'Christmas & Easter seasons' },
   { value: 'red', label: 'Red', hex: '#dc2626', description: 'Palm Sunday, Good Friday, Pentecost' },

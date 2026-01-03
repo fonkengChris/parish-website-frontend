@@ -19,7 +19,19 @@ import type {
 // Normalize baseURL - trim spaces and ensure proper format
 const getBaseURL = () => {
   const envURL = import.meta.env.VITE_API_URL;
-  if (!envURL) return '/api';
+  
+  // In production, warn if VITE_API_URL is not set
+  if (!envURL && import.meta.env.PROD) {
+    console.error(
+      '⚠️ VITE_API_URL is not set! API calls will fail. ' +
+      'Please set VITE_API_URL in Vercel environment variables to your backend URL (e.g., https://your-backend.herokuapp.com/api)'
+    );
+  }
+  
+  // In development, use relative URL (will be proxied by Vite)
+  if (!envURL) {
+    return '/api';
+  }
   
   // Trim whitespace and remove trailing slashes
   let url = envURL.trim();
@@ -43,7 +55,7 @@ const api = axios.create({
   // Prevent axios from automatically parsing JSON - we'll handle it manually
   // This allows us to catch HTML responses before they cause parse errors
   transformResponse: [
-    (data, headers) => {
+    (data) => {
       // If data is already parsed (object), return it (shouldn't happen with responseType: 'text')
       if (typeof data === 'object' && data !== null) {
         return data;
@@ -112,18 +124,41 @@ api.interceptors.response.use(
       
       // If it's HTML, convert to error immediately
       if (data.startsWith('<!') || data.startsWith('<html') || data.toLowerCase().includes('<!doctype')) {
-        const error: any = new Error('API endpoint returned HTML instead of JSON. The endpoint may not exist or the request failed.');
+        const baseURL = getBaseURL();
+        const isRelativeURL = baseURL.startsWith('/');
+        
+        let errorMessage = 'API endpoint returned HTML instead of JSON. ';
+        if (isRelativeURL && import.meta.env.PROD) {
+          errorMessage += 'VITE_API_URL environment variable is not set in Vercel. Please configure it in Vercel project settings to point to your backend API (e.g., https://your-backend.herokuapp.com/api).';
+        } else {
+          errorMessage += 'The endpoint may not exist or the request failed. Please check the API URL configuration.';
+        }
+        
+        const error: any = new Error(errorMessage);
         error.response = {
           status: response.status || 404,
           statusText: response.statusText || 'Not Found',
           data: { 
-            message: 'API endpoint not found or returned an error page. Please check the API URL configuration.',
+            message: errorMessage,
             status: response.status || 404,
-            statusText: response.statusText || 'Not Found'
+            statusText: response.statusText || 'Not Found',
+            baseURL: baseURL,
+            isRelativeURL: isRelativeURL
           },
           headers: response.headers
         };
         error.config = response.config;
+        
+        // Log helpful debugging info
+        console.error('❌ API Error: Received HTML instead of JSON', {
+          url: response.config?.url,
+          baseURL: baseURL,
+          fullURL: baseURL + (response.config?.url || ''),
+          status: response.status,
+          isProduction: import.meta.env.PROD,
+          viteApiUrl: import.meta.env.VITE_API_URL || 'NOT SET'
+        });
+        
         return Promise.reject(error);
       }
       
